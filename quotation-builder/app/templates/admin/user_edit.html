@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if edit_user else 'New' }} User — Admin{% endblock %}
+{% block page_title %}{{ 'Edit' if edit_user else 'New' }} User{% endblock %}
+{% block topbar_actions %}
+<a href="/admin/users" class="btn-outline">← Users</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-3xl">
+  <form method="post" action="{{ '/admin/users/' + edit_user.id|string + '/edit' if edit_user else '/admin/users/new' }}">
+    <div class="card p-6 mb-5">
+      <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-4">User Details</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="form-label">Name</label>
+          <input name="name" class="form-input" value="{{ edit_user.name if edit_user else '' }}" required />
+        </div>
+        <div>
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-input" value="{{ edit_user.email if edit_user else '' }}" required />
+        </div>
+        {% if not edit_user %}
+        <div>
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-input" required />
+        </div>
+        {% endif %}
+        {% if edit_user %}
+        <div>
+          <label class="form-label">Active</label>
+          <label class="flex items-center gap-2 mt-2 cursor-pointer">
+            <input type="checkbox" name="is_active" value="1"
+                   {% if edit_user.is_active %}checked{% endif %}
+                   class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-emerald-500 focus:ring-emerald-500" />
+            <span class="text-sm text-slate-700 dark:text-slate-300">Account is active</span>
+          </label>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card p-6 mb-5">
+      <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-4">Feature Permissions</p>
+
+      {% if feature_templates %}
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-sm text-slate-600 dark:text-slate-300">Apply template:</span>
+        <select id="templateSelect" class="form-input w-48">
+          <option value="">— select —</option>
+          {% for t in feature_templates %}
+          <option value="{{ t.feature_ids }}">{{ t.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1">
+      {% set ns = namespace(current_cat='') %}
+      {% for f in features %}
+        {% if f.category != ns.current_cat %}
+          {% set ns.current_cat = f.category %}
+          <div class="col-span-2 md:col-span-4 mt-4 first:mt-0">
+            <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">{{ f.category }}</p>
+          </div>
+        {% endif %}
+        <label class="flex items-center gap-2 py-0.5 cursor-pointer">
+          <input class="feat-checkbox w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-emerald-500 focus:ring-emerald-500"
+                 type="checkbox" name="feature_ids" value="{{ f.id }}"
+                 id="f{{ f.id }}" {% if f.id in assigned_feature_ids %}checked{% endif %} />
+          <span class="text-sm text-slate-700 dark:text-slate-300">{{ f.label }}</span>
+        </label>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button type="submit" class="btn-primary">Save User</button>
+      <a href="/admin/users" class="btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('templateSelect') && document.getElementById('templateSelect').addEventListener('change', function() {
+  const ids = JSON.parse(this.value || '[]');
+  document.querySelectorAll('.feat-checkbox').forEach(cb => {
+    cb.checked = ids.includes(parseInt(cb.value));
+  });
+});
+</script>
+{% endblock %}

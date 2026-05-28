@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — S&amp;G Exports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');</script>
+  <style>
+    .wave-bg {
+      background: linear-gradient(160deg, #ecfdf5 0%, #d1fae5 40%, #a7f3d0 70%, #6ee7b7 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .wave-bg::before {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z' fill='%23059669' opacity='0.15'/%3E%3Cpath d='M0,80 C400,20 800,100 1200,80 L1200,120 L0,120 Z' fill='%23065f46' opacity='0.1'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: cover;
+    }
+    /* Ship sailing animation */
+    @keyframes sail {
+      0% { transform: translateX(-80px); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 80px)); opacity: 0; }
+    }
+    .ship-sail {
+      animation: sail 18s linear infinite;
+      position: absolute;
+      bottom: 60px;
+    }
+  </style>
+</head>
+<body class="h-full font-sans antialiased">
+<div class="wave-bg min-h-screen flex flex-col items-center justify-center p-6 relative">
+  <!-- Sailing ship SVG -->
+  <div class="ship-sail pointer-events-none select-none">
+    <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.5">
+      <!-- Hull -->
+      <path d="M5 28 Q40 38 75 28 L70 33 Q40 42 10 33 Z" fill="#065f46"/>
+      <!-- Mast -->
+      <line x1="40" y1="5" x2="40" y2="30" stroke="#065f46" stroke-width="1.5"/>
+      <!-- Sail 1 -->
+      <path d="M40 6 L62 16 L40 26 Z" fill="#10b981" opacity="0.8"/>
+      <!-- Sail 2 -->
+      <path d="M40 8 L20 17 L40 24 Z" fill="#34d399" opacity="0.7"/>
+      <!-- Flag -->
+      <path d="M40 5 L50 9 L40 13 Z" fill="#059669"/>
+    </svg>
+  </div>
+
+  <!-- Login card -->
+  <div class="w-full max-w-sm relative z-10">
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-14 h-14 bg-emerald-500 rounded-2xl shadow-lg shadow-emerald-200 mb-3">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+          <circle cx="12" cy="12" r="3"/>
+          <path stroke-linecap="round" d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-slate-800">S&amp;G Exports</h1>
+      <p class="text-sm text-emerald-700 font-medium">Quotation Builder</p>
+    </div>
+
+    <div class="bg-white/90 backdrop-blur-sm border border-emerald-100 rounded-2xl shadow-xl shadow-emerald-100/50 p-8">
+      {% if error %}
+      <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">{{ error }}</div>
+      {% endif %}
+      <form method="post" action="/login" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Email</label>
+          <input type="email" name="email" required autofocus autocomplete="email"
+                 class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-shadow" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Password</label>
+          <input type="password" name="password" required autocomplete="current-password"
+                 class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-shadow" />
+        </div>
+        <button type="submit"
+                class="w-full flex justify-center bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors shadow-sm shadow-emerald-200">
+          Sign In
+        </button>
+      </form>
+    </div>
+    <p class="text-center text-xs text-emerald-700/60 mt-4">Mumbai, India · Est. 1998</p>
+  </div>
+</div>
+</body>
+</html>

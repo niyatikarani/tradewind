@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Quote Confirmed{% endblock %}
+{% block page_title %}Quote Confirmed{% endblock %}
+{% block topbar_actions %}
+<a href="/quotes" class="btn-outline">← Back to Quotes</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-lg">
+  <div class="card p-6">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/50 rounded-full flex items-center justify-center">
+        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-900 dark:text-slate-100">Quote Confirmed</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ quote.quote_number }}</p>
+      </div>
+    </div>
+
+    <p class="text-sm text-slate-600 dark:text-slate-300 mb-6">
+      Quote <strong class="text-slate-900 dark:text-slate-100">{{ quote.quote_number }}</strong> has been confirmed successfully.
+    </p>
+
+    <div class="flex flex-wrap gap-3">
+      <a href="/quotes/{{ quote.id }}/export/pdf" class="btn-danger flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+        </svg>
+        Download PDF
+      </a>
+      <a href="/quotes/{{ quote.id }}/export/xlsx" class="btn-primary flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Download XLSX
+      </a>
+      <a href="/quotes/{{ quote.id }}/export/csv" class="btn-outline flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Download CSV
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

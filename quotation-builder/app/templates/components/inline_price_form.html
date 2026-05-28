@@ -1,0 +1,7 @@
+<form hx-post="/prices/inline-entry" hx-target="#inline-price-result-{{ product_id }}-{{ quality_id }}" class="flex items-center gap-2">
+  <input type="hidden" name="product_id" value="{{ product_id }}" />
+  <input type="hidden" name="quality_id" value="{{ quality_id }}" />
+  <input type="number" step="0.01" name="price_per_kg" class="form-input w-28 text-sm py-1.5" placeholder="Price/kg" required />
+  <button type="submit" class="btn-outline text-xs py-1.5 px-3">Save</button>
+</form>
+<div id="inline-price-result-{{ product_id }}-{{ quality_id }}"></div>

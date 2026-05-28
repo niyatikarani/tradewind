@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ section | replace('_',' ') | title }} — Admin{% endblock %}
+{% block page_title %}{{ section | replace('_',' ') | title }}{% endblock %}
+{% block content %}
+<!-- Admin sub-nav -->
+<div class="flex items-center gap-2 mb-6">
+  <a href="/admin/products"
+     class="btn-outline text-xs {% if section == 'products' %}bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-400{% endif %}">
+    Products
+  </a>
+  <a href="/admin/package-sizes"
+     class="btn-outline text-xs {% if section == 'package_sizes' %}bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-400{% endif %}">
+    Package Sizes
+  </a>
+  <a href="/admin/users" class="btn-outline text-xs">Users</a>
+</div>
+
+{% if section == 'products' %}
+<div class="card p-4 mb-5">
+  <form method="post" action="/admin/products/new" class="flex flex-wrap gap-3 items-end">
+    <div>
+      <label class="form-label">Product name</label>
+      <input name="name" class="form-input w-48" placeholder="Product name" required />
+    </div>
+    <div>
+      <label class="form-label">Category</label>
+      <input name="category" class="form-input w-36" placeholder="Category" />
+    </div>
+    <div>
+      <label class="form-label">Competition</label>
+      <select name="competition_level" class="form-input w-36">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" class="btn-primary">Add Product</button>
+    </div>
+  </form>
+</div>
+{% elif section == 'package_sizes' %}
+<div class="card p-4 mb-5">
+  <form method="post" action="/admin/package-sizes/new" class="flex flex-wrap gap-3 items-end">
+    <div>
+      <label class="form-label">Display name</label>
+      <input name="display_name" class="form-input w-40" placeholder="e.g. 500g" required />
+    </div>
+    <div>
+      <label class="form-label">Weight (grams)</label>
+      <input name="weight_grams" type="number" class="form-input w-36" placeholder="Weight in grams" required />
+    </div>
+    <div>
+      <button type="submit" class="btn-primary">Add Size</button>
+    </div>
+  </form>
+</div>
+{% endif %}
+
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        {% for col in columns %}
+        <th class="table-header text-left">{{ col | replace('_',' ') | title }}</th>
+        {% endfor %}
+        <th class="table-header text-left"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+    <tr class="table-row">
+      {% for col in columns %}
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ item.get(col, '—') }}</td>
+      {% endfor %}
+      <td class="px-4 py-3">
+        {% if section == 'products' %}
+        <form action="/admin/products/{{ item.id }}/toggle" method="post" class="inline">
+          <button class="{% if item.is_active %}btn-danger{% else %}btn-primary{% endif %} text-xs py-1 px-3">
+            {{ 'Deactivate' if item.is_active else 'Activate' }}
+          </button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

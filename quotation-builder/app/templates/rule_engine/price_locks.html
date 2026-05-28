@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Price Locks{% endblock %}
+{% block page_title %}Rule Engine{% endblock %}
+{% block content %}
+<!-- Rule Engine sub-nav -->
+<div class="flex flex-wrap gap-1 mb-6 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+  <a href="/rule-engine" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">← Overview</a>
+  <a href="/rule-engine/margin" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Margin</a>
+  <a href="/rule-engine/factors" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Factors</a>
+  <a href="/rule-engine/countries" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Countries</a>
+  <a href="/rule-engine/clients" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Clients</a>
+  <a href="/rule-engine/currencies" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">FX Rates</a>
+  <a href="/rule-engine/cost-defaults" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Costs</a>
+  <a href="/rule-engine/audit" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Audit</a>
+</div>
+
+<p class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">Client Price Locks</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Price locks fix the selling price for a specific client/product/quality combination.</p>
+
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Client</th>
+        <th class="table-header text-left">Product</th>
+        <th class="table-header text-left">Quality</th>
+        <th class="table-header text-right">Locked Price/kg</th>
+        <th class="table-header text-left">Valid Until</th>
+        <th class="table-header text-left">Active</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for l in locks %}
+    <tr class="table-row">
+      <td class="px-4 py-3 text-slate-900 dark:text-slate-100">{{ l.client_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ l.product_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ l.quality_name }}</td>
+      <td class="px-4 py-3 text-right tabular-nums text-slate-900 dark:text-slate-100">
+        {{ '%.4f'|format(l.locked_price_per_kg_fx) if l.locked_price_per_kg_fx else '—' }}
+      </td>
+      <td class="px-4 py-3 text-slate-500 dark:text-slate-400">{{ l.valid_until[:10] if l.valid_until else '—' }}</td>
+      <td class="px-4 py-3">
+        {% if l.is_active %}
+          <span class="badge-confirmed">Active</span>
+        {% else %}
+          <span class="badge-draft">Inactive</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No price locks configured.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

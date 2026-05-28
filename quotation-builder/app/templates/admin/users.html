@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Users — Admin{% endblock %}
+{% block page_title %}Users{% endblock %}
+{% block topbar_actions %}
+<a href="/admin/users/new" class="btn-primary">+ New User</a>
+{% endblock %}
+{% block content %}
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Name</th>
+        <th class="table-header text-left">Email</th>
+        <th class="table-header text-left">Status</th>
+        <th class="table-header text-left"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for u in users %}
+    <tr class="table-row">
+      <td class="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{{ u.name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ u.email }}</td>
+      <td class="px-4 py-3">
+        {% if u.is_active %}
+          <span class="badge-confirmed">Active</span>
+        {% else %}
+          <span class="badge-cancelled">Inactive</span>
+        {% endif %}
+      </td>
+      <td class="px-4 py-3">
+        <a href="/admin/users/{{ u.id }}/edit" class="btn-outline text-xs py-1 px-3">Edit</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="4" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No users found.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

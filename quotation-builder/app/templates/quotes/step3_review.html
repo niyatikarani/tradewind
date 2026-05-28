@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Quote Review — Step 3{% endblock %}
+{% block page_title %}{{ quote.quote_number }} — Review{% endblock %}
+{% block topbar_actions %}
+<a href="/quotes/{{ quote.id }}/items" class="btn-outline">← Edit Items</a>
+{% endblock %}
+{% block content %}
+<!-- Quote meta -->
+<div class="flex flex-wrap gap-4 mb-5 text-sm text-slate-600 dark:text-slate-300">
+  <span>Client: <strong class="text-slate-900 dark:text-slate-100">{{ quote.client_name }}</strong></span>
+  <span>Country: <strong class="text-slate-900 dark:text-slate-100">{{ quote.country_name }}</strong></span>
+  <span>Currency: <strong class="text-slate-900 dark:text-slate-100">{{ quote.currency_code }}</strong></span>
+</div>
+
+{% if stale_error %}
+<div class="mb-4 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+  You must provide a stale override reason before confirming.
+</div>
+{% endif %}
+
+{% if any_stale %}
+<div class="mb-5 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 px-4 py-4">
+  <p class="text-sm font-semibold text-red-700 dark:text-red-400 mb-2">Stale Prices Detected — some SKUs have outdated prices.</p>
+  {% if 'quote.stale_override' in user_features %}
+  <form method="post" action="/quotes/{{ quote.id }}/confirm" class="flex items-center gap-3">
+    <input name="stale_override_reason" class="form-input max-w-sm"
+           placeholder="Override reason (required)" required />
+    <button class="btn-danger shrink-0">Override &amp; Confirm</button>
+  </form>
+  {% else %}
+  <p class="text-sm text-red-600 dark:text-red-400">Update stale prices before confirming.</p>
+  {% endif %}
+</div>
+{% else %}
+<form method="post" action="/quotes/{{ quote.id }}/confirm" class="mb-5">
+  <button class="btn-primary">Confirm Quote →</button>
+</form>
+{% endif %}
+
+<!-- Items table -->
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Product</th>
+        <th class="table-header text-left">Quality</th>
+        <th class="table-header text-left">Package</th>
+        <th class="table-header text-right">Qty (kg)</th>
+        <th class="table-header text-right">Cost/kg INR</th>
+        <th class="table-header text-right">Margin %</th>
+        <th class="table-header text-right">Selling Price {{ quote.currency_code }}</th>
+        <th class="table-header text-right">CBM</th>
+        <th class="table-header text-left">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+    <tr class="table-row">
+      <td class="px-4 py-3 text-slate-900 dark:text-slate-100">{{ item.product_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ item.quality_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ item.package_name }}</td>
+      <td class="px-4 py-3 text-right tabular-nums">{{ item.quantity_kg }}</td>
+      <td class="px-4 py-3 text-right tabular-nums {% if item.is_overridden.get('cost_per_kg_inr') %}text-amber-600 dark:text-amber-400 font-medium{% endif %}">
+        {{ '%.2f'|format(item.cost_per_kg_inr) }}
+      </td>
+      <td class="px-4 py-3 text-right tabular-nums {% if item.is_overridden.get('margin_pct') %}text-amber-600 dark:text-amber-400 font-medium{% endif %}">
+        {{ '%.1f'|format(item.margin_pct) }}%
+      </td>
+      <td class="px-4 py-3 text-right tabular-nums font-medium">{{ '%.4f'|format(item.selling_price_fx) }}</td>
+      <td class="px-4 py-3 text-right tabular-nums">{{ '%.3f'|format(item.total_cbm) }}</td>
+      <td class="px-4 py-3">
+        {% if item.is_stale %}
+          <span class="badge-stale">Stale{% if item.price_age_days %} ({{ item.price_age_days }}d){% endif %}</span>
+        {% else %}
+          <span class="badge-confirmed">Fresh</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if container_rec %}
+<div class="card p-5 mt-5 max-w-md">
+  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">Container Recommendation</p>
+  <p class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{{ container_rec.recommended }} Container</p>
+  <div class="space-y-1 text-sm text-slate-600 dark:text-slate-300">
+    <p>CBM: <strong>{{ '%.2f'|format(container_rec.total_cbm) }}</strong> ({{ container_rec.utilization_cbm_pct }}% utilization)</p>
+    <p>Weight: <strong>{{ '%.0f'|format(container_rec.total_kg) }} kg</strong> ({{ container_rec.utilization_kg_pct }}% utilization)</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

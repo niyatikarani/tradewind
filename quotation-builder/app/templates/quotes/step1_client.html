@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}New Quote — Step 1{% endblock %}
+{% block page_title %}New Quote{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+  <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Step 1 of 3 — Client &amp; Country</p>
+  <div class="card p-6">
+    <form method="post" action="/quotes/new" class="space-y-5">
+      <div>
+        <label class="form-label">Client</label>
+        <select name="client_id" class="form-input" required>
+          <option value="">— select —</option>
+          {% for c in clients %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Country</label>
+        <select name="country_id" class="form-input" required>
+          <option value="">— select —</option>
+          {% for c in countries %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Currency</label>
+        <select name="currency_id" class="form-input" required>
+          {% for c in currencies %}<option value="{{ c.id }}">{{ c.code }} — {{ c.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="btn-primary">Continue →</button>
+        <a href="/quotes" class="btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

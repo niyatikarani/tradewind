@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>S&G Exports — Design Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #e5e7eb; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; gap: 20px; }
+h1 { font-size: 15px; font-weight: 600; color: #374151; }
+.label-row { display: flex; gap: 32px; justify-content: center; }
+.label-row span { font-size: 12px; font-weight: 600; color: #6b7280; letter-spacing: .5px; text-transform: uppercase; }
+.split { display: flex; gap: 20px; width: 100%; max-width: 1200px; }
+.preview-wrap { flex: 1; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); border: 1px solid rgba(0,0,0,.08); }
+
+/* ── LIGHT MODE ─────────────────────────────────────── */
+.app-light { display: flex; height: 560px; background: #f1f5f9; font-family: 'Inter', sans-serif; font-size: 13px; }
+
+.sidebar-light { width: 220px; background: #fff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; }
+.sidebar-logo { padding: 18px 16px 14px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.logo-text { font-size: 12px; font-weight: 700; color: #0f172a; letter-spacing: -.2px; line-height: 1.2; }
+.logo-sub { font-size: 9px; color: #94a3b8; font-weight: 400; }
+.sidebar-nav { padding: 12px 8px; flex: 1; }
+.nav-section-label { font-size: 9px; font-weight: 600; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; padding: 4px 8px 6px; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 7px; cursor: pointer; margin-bottom: 1px; }
+.nav-item.active { background: #ecfdf5; }
+.nav-item.active .nav-icon { color: #10b981; }
+.nav-item.active .nav-label { color: #065f46; font-weight: 600; }
+.nav-item:not(.active) .nav-icon { color: #94a3b8; }
+.nav-item:not(.active) .nav-label { color: #64748b; }
+.nav-icon { font-size: 14px; width: 16px; text-align: center; }
+.nav-label { font-size: 12px; }
+.nav-badge { margin-left: auto; background: #fef3c7; color: #d97706; font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 10px; }
+.nav-badge.danger { background: #fee2e2; color: #dc2626; }
+.sidebar-footer { padding: 12px 16px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.user-name { font-size: 11px; font-weight: 600; color: #374151; }
+.user-role { font-size: 9px; color: #94a3b8; }
+.logout-btn { margin-left: auto; font-size: 9px; color: #94a3b8; cursor: pointer; }
+.theme-toggle { background: #f1f5f9; border-radius: 5px; padding: 3px 6px; font-size: 9px; color: #64748b; border: none; cursor: pointer; }
+
+.main-light { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+.page-title { font-size: 15px; font-weight: 700; color: #0f172a; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.btn-primary { background: #10b981; color: #fff; border: none; padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.btn-outline { background: #fff; color: #374151; border: 1px solid #e2e8f0; padding: 7px 12px; border-radius: 7px; font-size: 12px; cursor: pointer; }
+.search-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 6px 10px; font-size: 11px; color: #94a3b8; width: 180px; }
+
+.content-area { flex: 1; padding: 16px 20px; overflow-y: auto; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.kpi-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+.kpi-label { font-size: 10px; font-weight: 500; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+.kpi-value { font-size: 22px; font-weight: 700; color: #0f172a; line-height: 1; margin-bottom: 2px; }
+.kpi-value.emerald { color: #10b981; }
+.kpi-value.amber { color: #f59e0b; }
+.kpi-value.red { color: #ef4444; }
+.kpi-delta { font-size: 10px; color: #94a3b8; }
+.kpi-delta span { color: #10b981; font-weight: 600; }
+
+.table-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.table-header { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+.table-title { font-size: 13px; font-weight: 600; color: #0f172a; }
+.filter-tabs { display: flex; gap: 2px; background: #f1f5f9; border-radius: 6px; padding: 2px; }
+.tab { padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: 500; color: #64748b; cursor: pointer; }
+.tab.active { background: #fff; color: #065f46; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 10px 16px; text-align: left; font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; background: #f8fafc; border-bottom: 1px solid #f1f5f9; }
+tbody tr { border-bottom: 1px solid #f8fafc; }
+tbody tr:hover { background: #f8fafc; }
+tbody td { padding: 11px 16px; font-size: 12px; color: #374151; }
+.quote-num { font-weight: 600; color: #0f172a; font-family: monospace; font-size: 11px; }
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+.badge-draft { background: #f1f5f9; color: #475569; }
+.badge-confirmed { background: #dcfce7; color: #16a34a; }
+.badge-stale { background: #fee2e2; color: #dc2626; font-size: 9px; margin-left: 4px; }
+.action-btn { background: transparent; border: 1px solid #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer; }
+.action-btn:hover { border-color: #10b981; color: #10b981; }
+
+/* ── DARK MODE ─────────────────────────────────────── */
+.app-dark { display: flex; height: 560px; background: #0f172a; font-family: 'Inter', sans-serif; font-size: 13px; }
+.sidebar-dark { width: 220px; background: #0f172a; border-right: 1px solid #1e293b; display: flex; flex-direction: column; }
+.sidebar-dark .sidebar-logo { padding: 18px 16px 14px; border-bottom: 1px solid #1e293b; }
+.sidebar-dark .logo-text { color: #f1f5f9; }
+.sidebar-dark .logo-sub { color: #475569; }
+.sidebar-dark .nav-section-label { color: #475569; }
+.sidebar-dark .nav-item.active { background: #10b98115; }
+.sidebar-dark .nav-item.active .nav-icon { color: #10b981; }
+.sidebar-dark .nav-item.active .nav-label { color: #10b981; font-weight: 600; }
+.sidebar-dark .nav-item:not(.active) .nav-icon { color: #475569; }
+.sidebar-dark .nav-item:not(.active) .nav-label { color: #64748b; }
+.sidebar-dark .sidebar-footer { border-top-color: #1e293b; }
+.sidebar-dark .user-name { color: #e2e8f0; }
+.sidebar-dark .logout-btn { color: #475569; }
+
+.main-dark { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0f172a; }
+.topbar-dark { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+.topbar-dark .page-title { color: #f1f5f9; }
+.search-box-dark { background: #1e293b; border: 1px solid #334155; border-radius: 7px; padding: 6px 10px; font-size: 11px; color: #475569; width: 180px; }
+.btn-outline-dark { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 7px 12px; border-radius: 7px; font-size: 12px; cursor: pointer; }
+
+.content-dark { flex: 1; padding: 16px 20px; overflow-y: auto; }
+.kpi-card-dark { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px 16px; }
+.kpi-card-dark .kpi-label { color: #475569; }
+.kpi-card-dark .kpi-value { color: #f1f5f9; }
+
+.table-card-dark { background: #1e293b; border: 1px solid #334155; border-radius: 10px; overflow: hidden; }
+.table-card-dark .table-header { border-bottom-color: #334155; }
+.table-card-dark .table-title { color: #f1f5f9; }
+.table-card-dark .filter-tabs { background: #0f172a; }
+.table-card-dark .tab { color: #475569; }
+.table-card-dark .tab.active { background: #1e293b; color: #10b981; }
+.table-card-dark thead th { background: #1e293b; color: #475569; border-bottom-color: #334155; }
+.table-card-dark tbody tr { border-bottom-color: #1e293b; }
+.table-card-dark tbody tr:hover { background: #0f172a; }
+.table-card-dark tbody td { color: #94a3b8; }
+.table-card-dark .quote-num { color: #e2e8f0; }
+.table-card-dark .action-btn { background: transparent; border-color: #334155; color: #64748b; }
+</style>
+</head>
+<body>
+
+<h1>S&G Exports — Enterprise Redesign Preview</h1>
+<p style="font-size:12px;color:#6b7280;margin-top:-8px">Light mode (default) · Dark mode (toggled in Settings) · Font: Inter · Accent: Emerald</p>
+
+<div class="split">
+
+  <!-- LIGHT MODE -->
+  <div class="preview-wrap">
+    <div style="background:#10b981;color:#fff;font-size:10px;font-weight:600;padding:5px 12px;letter-spacing:.5px">☀ LIGHT MODE (Default)</div>
+    <div class="app-light">
+      <div class="sidebar-light">
+        <div class="sidebar-logo">
+          <div class="logo-mark">S</div>
+          <div>
+            <div class="logo-text">S&G Exports</div>
+            <div class="logo-sub">Quotation Manager</div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="nav-section-label">Main</div>
+          <div class="nav-item active">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Quotes</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Prices</span>
+            <span class="nav-badge danger">7</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Analytics</span>
+          </div>
+          <div class="nav-section-label">Config</div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Rule Engine</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🗃️</span>
+            <span class="nav-label">Master Data</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Users</span>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="avatar">A</div>
+          <div>
+            <div class="user-name">Admin</div>
+            <div class="user-role">Super User</div>
+          </div>
+          <button class="theme-toggle">🌙</button>
+        </div>
+      </div>
+      <div class="main-light">
+        <div class="topbar">
+          <div class="page-title">Quotes</div>
+          <div class="topbar-right">
+            <input class="search-box" placeholder="🔍  Search quotes..."/>
+            <button class="btn-outline">Export ↓</button>
+            <button class="btn-primary">＋ New Quote</button>
+          </div>
+        </div>
+        <div class="content-area">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">Active Quotes</div>
+              <div class="kpi-value emerald">42</div>
+              <div class="kpi-delta"><span>+8</span> this month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Revenue (INR)</div>
+              <div class="kpi-value">₹8.4L</div>
+              <div class="kpi-delta"><span>+12%</span> vs last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Stale Prices</div>
+              <div class="kpi-value amber">7</div>
+              <div class="kpi-delta">Needs attention</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Avg Margin</div>
+              <div class="kpi-value">13.4%</div>
+              <div class="kpi-delta"><span>↑ 1.2%</span> vs target</div>
+            </div>
+          </div>
+          <div class="table-card">
+            <div class="table-header">
+              <span class="table-title">All Quotes</span>
+              <div class="filter-tabs">
+                <div class="tab active">All</div>
+                <div class="tab">Draft</div>
+                <div class="tab">Confirmed</div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Quote #</th><th>Client</th><th>Country</th><th>Value (USD)</th><th>Margin</th><th>Status</th><th>Created</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="quote-num">SGE-0041</span></td>
+                  <td>Euro Spices GmbH</td><td>Germany 🇩🇪</td><td>$12,400</td><td>13.2%</td>
+                  <td><span class="badge badge-draft">Draft</span></td>
+                  <td>2026-05-16</td>
+                  <td><button class="action-btn">View →</button></td>
+                </tr>
+                <tr>
+                  <td><span class="quote-num">SGE-0040</span></td>
+                  <td>Al Barakah Trading</td><td>UAE 🇦🇪</td><td>$8,900</td><td>14.1%</td>
+                  <td><span class="badge badge-confirmed">Confirmed</span></td>
+                  <td>2026-05-14</td>
+                  <td><button class="action-btn">View →</button></td>
+                </tr>
+                <tr>
+                  <td><span class="quote-num">SGE-0039</span></td>
+                  <td>Sunrise Naturals</td><td>USA 🇺🇸</td><td>$21,600</td><td>11.8%</td>
+                  <td><span class="badge badge-draft">Draft</span><span class="badge badge-stale">⚠ Stale</span></td>
+                  <td>2026-05-12</td>
+                  <td><button class="action-btn">View →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK MODE -->
+  <div class="preview-wrap">
+    <div style="background:#1e293b;color:#94a3b8;font-size:10px;font-weight:600;padding:5px 12px;letter-spacing:.5px">🌙 DARK MODE (via Settings toggle)</div>
+    <div class="app-dark">
+      <div class="sidebar-dark">
+        <div class="sidebar-logo">
+          <div class="logo-mark">S</div>
+          <div>
+            <div class="logo-text">S&G Exports</div>
+            <div class="logo-sub">Quotation Manager</div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="nav-section-label">Main</div>
+          <div class="nav-item active">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Quotes</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Prices</span>
+            <span class="nav-badge danger">7</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Analytics</span>
+          </div>
+          <div class="nav-section-label">Config</div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Rule Engine</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🗃️</span>
+            <span class="nav-label">Master Data</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Users</span>
+          </div>
+        </nav>
+        <div class="sidebar-footer" style="border-top:1px solid #1e293b">
+          <div class="avatar">A</div>
+          <div>
+            <div class="user-name" style="color:#e2e8f0">Admin</div>
+            <div class="user-role" style="color:#475569">Super User</div>
+          </div>
+          <button class="theme-toggle" style="background:#1e293b;color:#94a3b8">☀️</button>
+        </div>
+      </div>
+      <div class="main-dark">
+        <div class="topbar-dark">
+          <div class="page-title" style="color:#f1f5f9">Quotes</div>
+          <div class="topbar-right">
+            <input class="search-box-dark" placeholder="🔍  Search quotes..."/>
+            <button class="btn-outline-dark">Export ↓</button>
+            <button class="btn-primary">＋ New Quote</button>
+          </div>
+        </div>
+        <div class="content-dark">
+          <div class="kpi-row">
+            <div class="kpi-card-dark">
+              <div class="kpi-label">Active Quotes</div>
+              <div class="kpi-value emerald">42</div>
+              <div class="kpi-delta"><span>+8</span> this month</div>
+            </div>
+            <div class="kpi-card-dark">
+              <div class="kpi-label">Revenue (INR)</div>
+              <div class="kpi-value">₹8.4L</div>
+              <div class="kpi-delta"><span>+12%</span> vs last month</div>
+            </div>
+            <div class="kpi-card-dark">
+              <div class="kpi-label">Stale Prices</div>
+              <div class="kpi-value amber">7</div>
+              <div class="kpi-delta">Needs attention</div>
+            </div>
+            <div class="kpi-card-dark">
+              <div class="kpi-label">Avg Margin</div>
+              <div class="kpi-value">13.4%</div>
+              <div class="kpi-delta"><span>↑ 1.2%</span> vs target</div>
+            </div>
+          </div>
+          <div class="table-card-dark">
+            <div class="table-header" style="background:#1e293b;border-bottom:1px solid #334155">
+              <span class="table-title">All Quotes</span>
+              <div class="filter-tabs" style="background:#0f172a">
+                <div class="tab active" style="background:#1e293b;color:#10b981">All</div>
+                <div class="tab" style="color:#475569">Draft</div>
+                <div class="tab" style="color:#475569">Confirmed</div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155">Quote #</th>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155">Client</th>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155">Country</th>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155">Value</th>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155">Status</th>
+                  <th style="background:#1e293b;color:#475569;border-bottom:1px solid #334155"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #1e293b">
+                  <td><span class="quote-num">SGE-0041</span></td>
+                  <td style="color:#94a3b8">Euro Spices GmbH</td>
+                  <td style="color:#94a3b8">Germany 🇩🇪</td>
+                  <td style="color:#94a3b8">$12,400</td>
+                  <td><span class="badge badge-draft" style="background:#1e293b;color:#64748b">Draft</span></td>
+                  <td><button class="action-btn" style="border-color:#334155;color:#475569">View →</button></td>
+                </tr>
+                <tr style="border-bottom:1px solid #1e293b">
+                  <td><span class="quote-num">SGE-0040</span></td>
+                  <td style="color:#94a3b8">Al Barakah Trading</td>
+                  <td style="color:#94a3b8">UAE 🇦🇪</td>
+                  <td style="color:#94a3b8">$8,900</td>
+                  <td><span class="badge badge-confirmed">Confirmed</span></td>
+                  <td><button class="action-btn" style="border-color:#334155;color:#475569">View →</button></td>
+                </tr>
+                <tr>
+                  <td><span class="quote-num">SGE-0039</span></td>
+                  <td style="color:#94a3b8">Sunrise Naturals</td>
+                  <td style="color:#94a3b8">USA 🇺🇸</td>
+                  <td style="color:#94a3b8">$21,600</td>
+                  <td><span class="badge badge-draft" style="background:#1e293b;color:#64748b">Draft</span><span class="badge badge-stale" style="margin-left:4px">⚠ Stale</span></td>
+                  <td><button class="action-btn" style="border-color:#334155;color:#475569">View →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px 20px;max-width:1200px;width:100%;display:flex;gap:24px;flex-wrap:wrap">
+  <div>
+    <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Tech Stack</div>
+    <div style="font-size:12px;color:#374151">Tailwind CSS (compiled, ~15KB) · Alpine.js (CDN) · HTMX (CDN) · Inter font (Google Fonts CDN)</div>
+  </div>
+  <div>
+    <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Build</div>
+    <div style="font-size:12px;color:#374151;font-family:monospace">npx tailwindcss -i static/css/input.css -o static/css/app.css --minify</div>
+  </div>
+  <div>
+    <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Deployment</div>
+    <div style="font-size:12px;color:#374151">Same FastAPI monolith — no extra server, no Node.js runtime needed in production</div>
+  </div>
+</div>
+
+<p style="font-size:12px;color:#6b7280;text-align:center">Does this design direction work? Any changes before I write the spec?</p>
+
+</body>
+</html>

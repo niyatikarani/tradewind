@@ -1,0 +1,8 @@
+.field-overridden {
+  border: 2px solid #fd7e14 !important;
+}
+.stale-badge { color: #dc3545; font-weight: 600; }
+.htmx-indicator { display: none; }
+.htmx-request .htmx-indicator { display: inline-block; }
+body { font-size: 0.9rem; }
+.table-sm td, .table-sm th { padding: 0.3rem 0.5rem; }

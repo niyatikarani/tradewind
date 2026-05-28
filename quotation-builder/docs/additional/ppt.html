@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeWind — Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-page: #f1f5f9;
+    --bg-surface: #ffffff;
+    --border: #e2e8f0;
+    --divider: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --accent: #10b981;
+    --accent-dark: #059669;
+    --accent-bg: #ecfdf5;
+    --accent-text: #065f46;
+    --warn-bg: #fef3c7;
+    --warn-text: #d97706;
+    --error-bg: #fee2e2;
+    --error-text: #dc2626;
+    --success-bg: #dcfce7;
+    --success-text: #16a34a;
+    --override: #fd7e14;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #1e293b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px;
+    gap: 0;
+    min-height: 100vh;
+  }
+
+  /* ── DECK CHROME ── */
+  .deck-header {
+    width: 860px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .deck-logo { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px; }
+  .deck-name { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+  .deck-tag { font-size: 11px; color: #64748b; margin-left: auto; }
+
+  .deck-nav {
+    width: 860px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.14); }
+  .slide-counter { font-size: 12px; color: #64748b; min-width: 60px; text-align: center; }
+
+  .dots-row { display: flex; gap: 6px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); cursor: pointer; transition: background 0.15s; }
+  .dot.active { background: #10b981; }
+
+  /* ── SLIDE WRAPPER ── */
+  .deck-viewport {
+    width: 860px;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+  }
+  .slides-track {
+    display: flex;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide {
+    min-width: 860px;
+    width: 860px;
+    background: var(--bg-page);
+    padding: 40px 40px 36px;
+    flex-shrink: 0;
+  }
+  .slide-white { background: #fff; }
+
+  /* ── TYPOGRAPHY ── */
+  .slide-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+  .slide-headline { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1.3; margin-bottom: 24px; }
+  .slide-headline-lg { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+
+  /* ── CARDS ── */
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: var(--shadow-card); }
+  .card-accent-left { border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; }
+  .card-accent-top { border-top: 3px solid var(--accent); }
+
+  /* ── BADGES ── */
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .badge-confirmed { background: var(--success-bg); color: var(--success-text); }
+  .badge-pending { background: var(--warn-bg); color: var(--warn-text); }
+  .badge-stale { background: var(--error-bg); color: var(--error-text); }
+  .badge-draft { background: var(--divider); color: #475569; }
+  .badge-accent { background: var(--accent-bg); color: var(--accent-text); }
+
+  /* ── KPI CARD ── */
+  .kpi-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow-card); }
+  .kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+  .kpi-val { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+  .kpi-val-accent { color: var(--accent); }
+  .kpi-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── BUTTONS ── */
+  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: 7px; font-size: 12px; font-weight: 600; padding: 7px 14px; cursor: pointer; font-family: 'Inter', sans-serif; }
+  .btn-outline { background: #fff; border: 1px solid var(--border); color: #374151; border-radius: 7px; font-size: 11px; font-weight: 600; padding: 6px 12px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+  /* ── TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .data-table thead th { background: #f8fafc; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 500; padding: 8px 10px; text-align: left; }
+  .data-table tbody td { padding: 9px 10px; color: #374151; border-bottom: 1px solid #f8fafc; }
+  .data-table tbody tr:hover td { background: #f8fafc; }
+  .mono { font-family: 'Courier New', monospace; font-weight: 600; color: var(--text-primary); }
+
+  /* ── ALERT BANNER ── */
+  .alert-warn { background: var(--warn-bg); border: 1px solid #fbbf24; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--warn-text); margin-bottom: 14px; }
+  .alert-stale { background: var(--error-bg); border: 1px solid #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--error-text); margin-bottom: 14px; }
+
+  /* ── SPEAKER NOTES ── */
+  .speaker-notes {
+    width: 860px;
+    max-width: 100%;
+    margin-top: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .sn-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; font-weight: 600; margin-bottom: 5px; }
+  .sn-text { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+  /* ── SLIDE SPECIFIC ── */
+
+  /* S1 - Cover */
+  .cover-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 400px; }
+  .cover-left { background: #fff; padding: 48px 36px; display: flex; flex-direction: column; justify-content: center; }
+  .cover-right { background: var(--bg-page); padding: 28px 24px; display: flex; flex-direction: column; justify-content: center; }
+  .cover-logo { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 22px; margin-bottom: 18px; }
+  .cover-product { font-size: 38px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 10px; }
+  .cover-tagline { font-size: 14px; color: var(--text-secondary); line-height: 1.55; max-width: 260px; margin-bottom: 24px; }
+
+  .mock-shell { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-card); }
+  .mock-topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 9px 14px; display: flex; align-items: center; gap: 8px; }
+  .mock-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  .mock-title { font-size: 11px; font-weight: 600; color: var(--text-primary); }
+  .mock-inner { display: flex; }
+  .mock-sidebar { width: 52px; background: #fff; border-right: 1px solid var(--border); padding: 10px 5px; display: flex; flex-direction: column; gap: 5px; }
+  .mock-nav-item { height: 28px; border-radius: 6px; }
+  .nav-active { background: var(--accent-bg); }
+  .nav-inactive { background: #f8fafc; }
+  .mock-main { flex: 1; background: var(--bg-page); padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .mock-kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .mock-kpi { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 7px 9px; }
+  .mkpi-l { font-size: 7px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.4px; }
+  .mkpi-v { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .mock-table-stub { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; }
+  .stub-row { height: 8px; background: #f1f5f9; border-radius: 3px; margin-bottom: 5px; }
+
+  /* S2 - Problem */
+  .three-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .pain-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 16px; box-shadow: var(--shadow-card); }
+  .pain-icon-wrap { width: 30px; height: 30px; background: var(--error-bg); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .pain-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
+  .pain-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; line-height: 1.4; }
+  .pain-body { font-size: 11px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* S3 - Market */
+  .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* S4 - Solution flow */
+  .flow-wrap { display: flex; align-items: stretch; gap: 0; overflow: hidden; }
+  .flow-node { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 10px; flex: 1; text-align: center; box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .flow-arrow { color: var(--accent); font-size: 16px; display: flex; align-items: center; padding: 0 4px; flex-shrink: 0; font-weight: 700; }
+  .flow-icon { width: 30px; height: 30px; background: var(--accent-bg); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+  .flow-label { font-size: 10px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+  .flow-sub { font-size: 9px; color: var(--text-secondary); }
+
+  /* S5 - AI Intake */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .feature-list li { display: flex; gap: 10px; align-items: flex-start; }
+  .feat-icon { width: 22px; height: 22px; background: var(--accent-bg); border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .feat-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .feat-body { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* S6 - Quotation */
+  .quote-screen { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-card); }
+  .quote-topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .quote-title { font-size: 13px; font-weight: 600; color: var(--text-primary); flex: 1; }
+  .quote-kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; padding: 14px 16px; background: var(--bg-page); }
+  .override-row td { border-left: 3px solid var(--override) !important; }
+  .override-cell { background: #fff8f3 !important; color: var(--override); font-weight: 600; }
+
+  /* S7 - Packaging */
+  .pack-panel { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: var(--shadow-card); }
+  .pack-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f8fafc; font-size: 12px; }
+  .pack-row:last-child { border-bottom: none; }
+  .pack-key { color: var(--text-muted); font-size: 11px; }
+  .pack-val { color: var(--text-primary); font-weight: 500; }
+  .proc-step { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 7px; margin-bottom: 5px; font-size: 11px; font-weight: 500; }
+  .step-ok { background: var(--accent-bg); color: var(--accent-text); }
+  .step-block { background: var(--error-bg); color: var(--error-text); text-decoration: line-through; }
+  .step-req { background: var(--warn-bg); color: var(--warn-text); }
+  .cbm-bar-track { background: #f1f5f9; border-radius: 4px; height: 8px; margin: 8px 0 4px; }
+  .cbm-bar-fill { background: var(--accent); border-radius: 4px; height: 8px; }
+
+  /* S8 - Compliance */
+  .cert-step { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 7px; margin-bottom: 5px; font-size: 11px; font-weight: 500; }
+
+  /* S9 - Inventory */
+  .inv-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: var(--shadow-card); }
+
+  /* S10 - PO */
+  .po-flow { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .po-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
+
+  /* S11 - Competitive */
+  .matrix-outer { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: var(--shadow-card); }
+  .matrix-area { position: relative; height: 280px; border-left: 1.5px solid var(--border); border-bottom: 1.5px solid var(--border); }
+  .comp-dot { position: absolute; width: 12px; height: 12px; background: var(--text-muted); border-radius: 50%; transform: translate(-50%,-50%); }
+  .tw-dot { position: absolute; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 0 6px rgba(16,185,129,0.12); }
+  .dot-lbl { position: absolute; font-size: 10px; color: #374151; font-weight: 500; transform: translateX(-50%); white-space: nowrap; }
+  .dot-lbl-tw { position: absolute; font-size: 10px; color: var(--accent-text); font-weight: 700; transform: translateX(-50%); white-space: nowrap; }
+  .q-lbl { position: absolute; font-size: 8px; text-transform: uppercase; letter-spacing: 0.4px; color: #cbd5e1; font-weight: 500; }
+
+  /* S15 - Close */
+  .close-wrap { display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 380px; justify-content: space-between; padding: 48px 40px 40px; background: #fff; }
+  .close-logo { width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg,#10b981,#059669); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 26px; margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<div class="deck-header">
+  <div class="deck-logo">T</div>
+  <div class="deck-name">TradeWind</div>
+  <div class="deck-tag">TradeWind · Client Demo · 15 slides</div>
+</div>
+
+<div class="deck-nav">
+  <button class="nav-btn" onclick="go(-1)">← Prev</button>
+  <div class="dots-row" id="dots"></div>
+  <span class="slide-counter" id="counter">1 / 12</span>
+  <button class="nav-btn" onclick="go(1)">Next →</button>
+</div>
+
+<div class="deck-viewport">
+<div class="slides-track" id="track">
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 01 — COVER
+══════════════════════════════════════════════════ -->
+<div class="slide" style="padding:0">
+  <div class="cover-wrap">
+    <div class="cover-left">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;font-weight:500;margin-bottom:16px">Built for your team · 2025</div>
+      <div class="cover-logo">T</div>
+      <div class="cover-product">TradeWind</div>
+      <div class="cover-tagline">From WhatsApp Order to Shipped Container — All in One.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge badge-accent">AI-Native SaaS</span>
+        <span class="badge badge-accent">India Food Export</span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:#94a3b8;margin-bottom:8px;font-weight:500">Live Platform Preview</div>
+      <div class="mock-shell">
+        <div class="mock-topbar">
+          <div class="mock-dot"></div>
+          <div class="mock-title">TradeWind — Dashboard</div>
+          <div style="margin-left:auto"><button class="btn-primary" style="font-size:9px;padding:4px 10px">+ New Order</button></div>
+        </div>
+        <div class="mock-inner">
+          <div class="mock-sidebar">
+            <div class="mock-nav-item nav-active"></div>
+            <div class="mock-nav-item nav-inactive"></div>
+            <div class="mock-nav-item nav-inactive"></div>
+            <div class="mock-nav-item nav-inactive"></div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-kpi-row">
+              <div class="mock-kpi"><div class="mkpi-l">Orders This Week</div><div class="mkpi-v">14</div></div>
+              <div class="mock-kpi"><div class="mkpi-l">Open Quotes</div><div class="mkpi-v" style="color:#10b981">₹42L</div></div>
+              <div class="mock-kpi"><div class="mkpi-l">Container Util.</div><div class="mkpi-v">87%</div></div>
+            </div>
+            <div class="mock-table-stub">
+              <div style="font-size:7px;text-transform:uppercase;color:#94a3b8;letter-spacing:0.4px;margin-bottom:5px">Recent Orders</div>
+              <div class="stub-row" style="width:90%"></div>
+              <div class="stub-row" style="width:76%"></div>
+              <div class="stub-row" style="width:84%"></div>
+              <div style="display:flex;gap:5px;margin-top:7px">
+                <span class="badge badge-confirmed">Confirmed</span>
+                <span class="badge badge-pending">Pending</span>
+                <span class="badge badge-confirmed">Shipped</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:#94a3b8;text-align:center">Shopify-grade UI · Built for Indian exporters</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 02 — THE PROBLEM
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Where Time &amp; Money Gets Lost Today</div>
+  <div class="slide-headline">Three problems happening in your business right now.</div>
+  <div class="three-cols">
+    <div class="pain-card">
+      <div class="pain-icon-wrap"><i class="ti ti-message-circle" style="font-size:15px;color:#dc2626"></i></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <div class="pain-label">Order Intake</div>
+        <span class="badge badge-stale">Pain #1</span>
+      </div>
+      <div class="pain-title">A buyer sends a photo at 6pm. Someone re-types it at 9am.</div>
+      <div class="pain-body">Every order — handwritten note, forwarded WA message, or blurry Excel screenshot — gets manually re-entered by your team. Then re-entered again for the quote. Then again for the invoice.</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #fee2e2;font-size:11px;color:#dc2626;font-weight:600">~45–90 min per order in re-entry alone</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon-wrap"><i class="ti ti-bell-off" style="font-size:15px;color:#dc2626"></i></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <div class="pain-label">Deadlines &amp; Tasks</div>
+        <span class="badge badge-stale">Pain #2</span>
+      </div>
+      <div class="pain-title">Container is booked for the 20th. Nobody got reminded until the 18th.</div>
+      <div class="pain-body">Once a container is planned, the countdown begins — sourcing, packing, labelling, documentation. Without automated checkpoints, the owner ends up doing daily WhatsApp follow-ups with every team member to know where things stand.</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #fee2e2;font-size:11px;color:#dc2626;font-weight:600">Your time spent chasing status, not running the business</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon-wrap"><i class="ti ti-package" style="font-size:15px;color:#dc2626"></i></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <div class="pain-label">Packaging &amp; Ops</div>
+        <span class="badge badge-stale">Pain #3</span>
+      </div>
+      <div class="pain-title">The packaging team heard it through 3 WhatsApp forwards. The carton size was wrong.</div>
+      <div class="pain-body">Kosher order spec, label requirements, jar vs packet — this information lives in a chat thread. By the time it reaches the floor, something's wrong. Re-packing a shipped batch costs more than the margin you made.</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #fee2e2;font-size:11px;color:#dc2626;font-weight:600">Rework, delays, and buyer complaints</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 03 — COST OF TODAY
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">What This Costs Your Business Today</div>
+  <div class="slide-headline">Before TradeWind vs. after — in your team's actual hours.</div>
+  <div class="market-grid">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="kpi-card" style="border-left:3px solid #dc2626">
+        <div class="kpi-label">Manual re-entry per order</div>
+        <div class="kpi-val" style="color:#dc2626">45–90 min</div>
+        <div class="kpi-sub">WhatsApp → Excel → Quote → Invoice. Each step is a copy job.</div>
+      </div>
+      <div class="kpi-card" style="border-left:3px solid #dc2626">
+        <div class="kpi-label">Daily follow-ups after container booking</div>
+        <div class="kpi-val" style="color:#dc2626">Manual</div>
+        <div class="kpi-sub">Sourcing, packing, labelling, docs — each step needs a nudge. No system tracks it automatically.</div>
+      </div>
+      <div class="kpi-card" style="border-left:3px solid #dc2626">
+        <div class="kpi-label">Backtracking prices to build a PO</div>
+        <div class="kpi-val" style="color:#dc2626">Hours</div>
+        <div class="kpi-sub">Cross-referencing old Excel sheets, vendor calls, and quote history just to raise a purchase order.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:2px">What changes with TradeWind</div>
+      <div class="card card-accent-left" style="padding:14px 16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:4px">Order intake → structured in &lt;2 min</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.55">WA photo, PDF, or message — AI reads it, extracts every field, flags what's unclear. Your team reviews, not re-types.</div>
+      </div>
+      <div class="card card-accent-left" style="padding:14px 16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:4px">AI-generated task timeline after container booking</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.55">TradeWind breaks down what needs to happen, by when, and for whom — and sends reminders automatically. No more daily status chases.</div>
+      </div>
+      <div class="card card-accent-left" style="padding:14px 16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:4px">Quote accepted → Sales Order raised automatically</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.55">No manual handoff. The moment a quote is confirmed, a Sales Order is created with all order details locked in — ready to trigger packaging and procurement.</div>
+      </div>
+      <div class="card card-accent-left" style="padding:14px 16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:4px">PO and Purchase List auto-built from the confirmed order</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.55">No Excel backtracking. Prices, quantities, vendor details — all pulled from order history and current rates. Ready in seconds.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 04 — THE SOLUTION
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">The Solution</div>
+  <div class="slide-headline">One platform. Entire export workflow.</div>
+  <div class="flow-wrap">
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-brand-whatsapp" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">WhatsApp / Image / PDF</div>
+      <div class="flow-sub">Any format, any device</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-brain" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">AI Order Structuring</div>
+      <div class="flow-sub">SKU, qty, date extracted</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-file-invoice" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">Quotation Builder</div>
+      <div class="flow-sub">Vendor prices, margins</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-file-check" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">Sales Order</div>
+      <div class="flow-sub">Auto-raised on confirm</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-box" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">Packaging + CBM</div>
+      <div class="flow-sub">SKU-aware, cert-locked</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-icon"><i class="ti ti-checklist" style="font-size:15px;color:#10b981"></i></div>
+      <div class="flow-label">Packing Execution</div>
+      <div class="flow-sub">Tasks, deadlines, alerts</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:12px;color:#64748b;text-align:center">Each step feeds the next. No re-entry. No lost context.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 05 — AI ORDER INTAKE
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 1</div>
+  <div class="slide-headline">Any format. Any device. Structured in seconds.</div>
+  <div class="two-col">
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <thead>
+          <tr><th>Type</th><th>Sender</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-draft" style="font-size:8px">IMG</span></td>
+            <td><span style="font-size:11px;color:#374151">Al Barakah Trading</span><br><span style="font-size:10px;color:#94a3b8">SKU: Cinnamon · 500kg · 14 Jan · Kosher</span></td>
+            <td><span class="badge badge-confirmed">94% conf.</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-accent" style="font-size:8px">MSG</span></td>
+            <td><span style="font-size:11px;color:#374151">Euro Spices GmbH</span><br><span style="font-size:10px;color:#94a3b8">SKU: Cardamom Bold · 200kg · 20 Jan</span></td>
+            <td><span class="badge badge-confirmed">87% conf.</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-pending" style="font-size:8px">PDF</span></td>
+            <td><span style="font-size:11px;color:#374151">Saffron House UK</span><br><span style="font-size:10px;color:#94a3b8">⚠ 2 fields flagged for review</span></td>
+            <td><span class="badge badge-pending">Review</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon"><i class="ti ti-brand-whatsapp" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Any intake format</div><div class="feat-body">WhatsApp images, voice notes, PDFs, forwarded messages — all accepted.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-sparkles" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">AI field extraction</div><div class="feat-body">SKUs, quantities, delivery dates, special requirements extracted automatically.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-shield-check" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Confidence scoring</div><div class="feat-body">Low-confidence fields are flagged for review — never silently wrong.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-user-circle" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Buyer memory</div><div class="feat-body">Remembers prior orders, usual terms, and pricing tiers per buyer.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-device-mobile" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Works on mobile too</div><div class="feat-body">The full platform is accessible from your phone — review, approve, or flag orders from anywhere, not just the office.</div></div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 06 — QUOTATION BUILDER
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 2 — Quotation Builder</div>
+  <div class="slide-headline">Your vendor prices, packaging costs, FX, and margin — one screen, one send.</div>
+  <div class="quote-screen">
+    <div class="quote-topbar">
+      <span class="quote-title">Quote SGE-0047 — Review</span>
+      <span class="badge badge-pending" style="font-size:9px">Draft</span>
+      <button class="btn-primary" style="margin-left:auto">Send Quote</button>
+    </div>
+    <div class="alert-warn" style="margin:12px 16px 0;border-radius:8px">⚠ Cinnamon Sticks price entry is 5 days old — confirm with your vendor before sending.</div>
+    <div class="quote-kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Total FOB</div><div class="kpi-val" style="font-size:18px">₹14,82,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">Margin</div><div class="kpi-val kpi-val-accent" style="font-size:18px">12.4%</div></div>
+      <div class="kpi-card"><div class="kpi-label">FX Rate</div><div class="kpi-val" style="font-size:18px">₹83.4/$</div></div>
+      <div class="kpi-card"><div class="kpi-label">Container</div><div class="kpi-val" style="font-size:18px">20ft</div><div class="kpi-sub">67% full</div></div>
+    </div>
+    <div style="padding:12px 16px 16px">
+      <table class="data-table">
+        <thead><tr><th>SKU</th><th>Qty</th><th>Vendor Price</th><th>Pack Cost</th><th>Margin</th><th>Total</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">CINN-STICKS-001</td><td>500 kg</td><td>₹280/kg</td><td>₹18/kg</td><td style="color:#10b981;font-weight:600">11.2%</td><td class="mono">₹1,49,000</td></tr>
+          <tr><td class="mono">BLK-PEPPER-002</td><td>200 kg</td><td>₹540/kg</td><td>₹22/kg</td><td style="color:#10b981;font-weight:600">13.8%</td><td class="mono">₹1,12,400</td></tr>
+          <tr class="override-row"><td class="mono">TURMERIC-PWD-003</td><td>100 kg</td><td class="override-cell">₹145/kg ✎</td><td>₹12/kg</td><td style="color:#10b981;font-weight:600">14.1%</td><td class="mono">₹15,700</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:10px;color:#94a3b8">
+        <span style="color:#fd7e14;font-weight:600">■</span> Orange = manually overridden &nbsp;·&nbsp;
+        Prices entered by your team from vendor quotes — actual rates vary by vendor and quantity. MCX/NCDEX used as a directional reference only.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE — PRICE WATERFALL
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 2 — Quotation Builder · Price Breakdown</div>
+  <div class="slide-headline">Every cost, every surcharge, every rate — named before you send.</div>
+  <div class="two-col">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="background:#f8fafc;padding:9px 14px;border-bottom:1px solid var(--border);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#64748b">Price Breakdown — CINN-STICKS-001 · per kg</div>
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td style="color:#64748b;font-size:11px">Base commodity price</td>
+            <td style="text-align:right" class="mono">₹ 280.00</td>
+            <td style="font-size:9px;color:#94a3b8">Ramesh Agro, vendor call</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">+ Kosher cert surcharge</td>
+            <td style="text-align:right" class="mono">₹ 6.40</td>
+            <td style="font-size:9px;color:#94a3b8">Rules engine · auto-applied</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">+ Packaging (100g kraft)</td>
+            <td style="text-align:right" class="mono">₹ 18.00</td>
+            <td style="font-size:9px;color:#94a3b8">500 bags × ₹9 · from config</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">+ Inland freight to port</td>
+            <td style="text-align:right" class="mono">₹ 8.50</td>
+            <td style="font-size:9px;color:#94a3b8">Fixed, Mundra port</td>
+          </tr>
+          <tr style="background:#f8fafc">
+            <td style="font-weight:600;color:#0f172a;font-size:11px">= EXW Cost</td>
+            <td style="text-align:right;font-weight:700" class="mono">₹ 312.90</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">+ FOB freight &amp; insurance</td>
+            <td style="text-align:right" class="mono">₹ 18.20</td>
+            <td style="font-size:9px;color:#94a3b8">Estimated, FOB Mundra</td>
+          </tr>
+          <tr style="background:#f8fafc">
+            <td style="font-weight:600;color:#0f172a;font-size:11px">= Total cost (INR)</td>
+            <td style="text-align:right;font-weight:700" class="mono">₹ 331.10</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">× FX rate (RBI FBIL)</td>
+            <td style="text-align:right" class="mono">× 0.01201</td>
+            <td style="font-size:9px;color:#10b981;font-weight:600">Locked · 23 May · 11:30 IST</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;font-size:11px">× Margin</td>
+            <td style="text-align:right" class="mono">× 1.160</td>
+            <td style="font-size:9px;color:#10b981">16.0% · set by Rahul</td>
+          </tr>
+          <tr style="background:#ecfdf5">
+            <td style="font-weight:700;color:#065f46;font-size:11px">= Quoted price / kg</td>
+            <td style="text-align:right;font-weight:700;color:#10b981" class="mono">$ 4.61</td>
+            <td style="font-size:9px;color:#10b981">× 500 kg = $2,305</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:8px 14px;background:#fffbeb;border-top:1px solid #fde68a;font-size:10px;color:#92400e;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-sparkles" style="font-size:11px;color:#d97706"></i> AI: This margin (16%) is 2.3% below your Japan average (18.4%). Suggested price: $4.72.
+      </div>
+    </div>
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon"><i class="ti ti-list-details" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Named steps, not a black box</div><div class="feat-body">Certification surcharge, packaging cost, freight, FX buffer — every component labelled and visible before you hit send.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-lock" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">FX rate locked at quote save</div><div class="feat-body">Rate source, timestamp, and value captured the moment you save. Historical quotes never recalculate with new rates — your original margin is preserved.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-versions" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Quote versions with diff</div><div class="feat-body">Buyer asks for a revision? v1 and v2 sit side by side — every changed input highlighted so there's no confusion about what moved.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-sparkles" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">AI margin coaching</div><div class="feat-body">If a quote deviates from your historical norm for that product and buyer, the system flags it before you send — not after the deal is closed.</div></div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 07 — PACKAGING CONFIGURATOR
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 3</div>
+  <div class="slide-headline">Cinnamon sticks aren't cardamom powder. The system knows.</div>
+  <div class="two-col">
+    <div class="pack-panel">
+      <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f1f5f9">Packaging Config — SO-089</div>
+      <div class="pack-row"><span class="pack-key">Product</span><span class="pack-val">Cinnamon Sticks</span></div>
+      <div class="pack-row"><span class="pack-key">Order Qty</span><span class="pack-val">500 kg</span></div>
+      <div class="pack-row"><span class="pack-key">Pack Format</span><span class="pack-val">100g kraft packets</span></div>
+      <div class="pack-row"><span class="pack-key">Label</span><span class="pack-val">Both sides, HQ print</span></div>
+      <div class="pack-row"><span class="pack-key">Certifications</span><div style="display:flex;gap:4px"><span class="badge badge-confirmed">Kosher</span><span class="badge badge-confirmed">FSSAI</span></div></div>
+      <div style="margin:10px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;font-weight:500">Processing Constraints — Kosher active</div>
+      <div class="proc-step step-ok"><i class="ti ti-check" style="font-size:12px"></i> Allowed methods — set by certification rules</div>
+      <div class="proc-step step-block"><i class="ti ti-lock" style="font-size:12px"></i> Blocked methods — auto-restricted by cert</div>
+      <div class="proc-step step-req"><i class="ti ti-alert-triangle" style="font-size:12px"></i> Required steps — flagged for compliance</div>
+      <div style="margin-top:8px;padding:7px 10px;background:#fffbeb;border-radius:6px;font-size:10px;color:#92400e">Any default can be manually overridden per order if needed.</div>
+      <div class="pack-row" style="margin-top:8px"><span class="pack-key">Carton</span><span class="pack-val">24 pkt/ctn · 42×28×28cm · 2.4kg</span></div>
+      <div style="margin-top:10px">
+        <div style="display:flex;justify-content:space-between;font-size:10px"><span style="color:#94a3b8">CBM Usage</span><span style="color:#10b981;font-weight:600">18.4 / 33.2 CBM (55%)</span></div>
+        <div class="cbm-bar-track"><div class="cbm-bar-fill" style="width:55%"></div></div>
+      </div>
+    </div>
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon"><i class="ti ti-box" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">SKU-aware rules</div><div class="feat-body">Powder, sticks, grains, and liquids each follow different packaging logic automatically.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-hierarchy" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Three-level rule hierarchy</div><div class="feat-body">Rules set at certification level, country level, or client level — each overrides the one above. Fully configurable for your business.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-ship" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Container dashboard</div><div class="feat-body">Live CBM vs booked container — flag wasted space before booking.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-edit" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Manual override always available</div><div class="feat-body">Any default — packaging format, processing step, carton config — can be overridden per order when the situation calls for it.</div></div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE — CONTAINER LOAD OPTIMIZER
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 3 — Packaging Configurator · Container Planning</div>
+  <div class="slide-headline">Exactly how many cartons. Which container. Flagged before you book.</div>
+  <div class="two-col">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="pack-panel">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:10px">Container Plan — SO-089 · 20ft FCL</div>
+        <div class="pack-row"><span class="pack-key">Units per carton</span><span class="pack-val">24 packets</span></div>
+        <div class="pack-row"><span class="pack-key">Cartons per pallet</span><span class="pack-val">48 · (4 layers × 12)</span></div>
+        <div class="pack-row"><span class="pack-key">Pallets in container</span><span class="pack-val">10</span></div>
+        <div class="pack-row"><span class="pack-key">Total cartons</span><span class="pack-val" style="color:#10b981;font-weight:600">480</span></div>
+        <div class="pack-row"><span class="pack-key">Total weight</span><span class="pack-val">1,152 kg of 22,000 max</span></div>
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+            <span style="color:#94a3b8">CBM Utilisation</span>
+            <span style="color:#d97706;font-weight:600">18.4 / 25.0 m³ — 73.6%</span>
+          </div>
+          <div class="cbm-bar-track"><div class="cbm-bar-fill" style="width:73.6%;background:#d97706"></div></div>
+          <div style="font-size:9px;color:#d97706;margin-top:3px">⚠ Below 85% — 58 more cartons fit. Consolidate or switch to smaller container.</div>
+        </div>
+      </div>
+      <div class="pack-panel">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:8px">Constraint Checks</div>
+        <div class="proc-step step-ok"><i class="ti ti-check" style="font-size:12px"></i> Stack height: 4 layers — within kraft limit (5)</div>
+        <div class="proc-step step-ok"><i class="ti ti-check" style="font-size:12px"></i> Weight per layer: 28.8 kg — within 40 kg limit</div>
+        <div class="proc-step step-ok"><i class="ti ti-check" style="font-size:12px"></i> Kosher: no co-loading with non-certified products</div>
+        <div class="proc-step step-req"><i class="ti ti-alert-triangle" style="font-size:12px"></i> EU destination: ISPM 15 pallet treatment required</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card" style="padding:14px;border-left:3px solid #10b981">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#10b981;margin-bottom:8px">AI Config Suggestion</div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">Based on similar Kosher spice orders to UAE, exporters use: <strong>30 units per inner box · 8 inner boxes per master carton · EUR pallets · 4-layer stack.</strong></div>
+        <div style="margin-top:9px;display:flex;gap:6px">
+          <button class="btn-primary" style="font-size:10px;padding:5px 12px">Use this config</button>
+          <button class="btn-outline" style="font-size:10px;padding:5px 12px">Keep current</button>
+        </div>
+      </div>
+      <ul class="feature-list">
+        <li>
+          <div class="feat-icon"><i class="ti ti-camera" style="font-size:13px;color:#10b981"></i></div>
+          <div><div class="feat-title">Photo → dimensions</div><div class="feat-body">Photograph your product next to a coin. AI estimates L×W×H and pre-fills the configurator. No spec sheet needed.</div></div>
+        </li>
+        <li>
+          <div class="feat-icon"><i class="ti ti-rotate-3d" style="font-size:13px;color:#10b981"></i></div>
+          <div><div class="feat-title">Orientation rules</div><div class="feat-body">"This side up", liquids, and fragile items are blocked from rotation. The algorithm respects this — no wrong-side-up cartons reaching the floor.</div></div>
+        </li>
+        <li>
+          <div class="feat-icon"><i class="ti ti-ship" style="font-size:13px;color:#10b981"></i></div>
+          <div><div class="feat-title">20ft vs 40ft guidance</div><div class="feat-body">When utilisation drops below your threshold, the system calculates whether adding volume or switching container size saves money — before you commit the booking.</div></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 08 — COMPLIANCE ENGINE
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 4 — Rules Engine</div>
+  <div class="slide-headline" style="font-size:18px">Rules configured once at every level. Always overridable when your order needs it.</div>
+  <div class="two-col">
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;font-weight:500;margin-bottom:10px">Rule Hierarchy — applied in order</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#ecfdf5;border-radius:7px;font-size:11px;font-weight:600;color:#065f46">
+          <i class="ti ti-certificate" style="font-size:13px;color:#10b981"></i> Certification level &nbsp;<span style="font-size:10px;font-weight:400;color:#10b981">(e.g. Kosher, Halal, Organic)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f0f9ff;border-radius:7px;font-size:11px;font-weight:600;color:#0369a1">
+          <i class="ti ti-globe" style="font-size:13px;color:#0ea5e9"></i> Country level &nbsp;<span style="font-size:10px;font-weight:400;color:#0ea5e9">(e.g. EU labelling, US FDA, GCC)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#faf5ff;border-radius:7px;font-size:11px;font-weight:600;color:#6b21a8">
+          <i class="ti ti-user" style="font-size:13px;color:#a855f7"></i> Client level &nbsp;<span style="font-size:10px;font-weight:400;color:#a855f7">(buyer-specific preferences and requirements)</span>
+        </div>
+      </div>
+      <div style="padding:8px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;font-size:11px;color:#92400e;display:flex;align-items:center;gap:7px">
+        <i class="ti ti-edit" style="font-size:13px"></i> Any rule can be manually overridden per order — full flexibility when you need it.
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <thead><tr><th>Certification</th><th>Restricts</th><th>Requires</th><th>Auto-doc</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="font-size:11px">Kosher</td><td style="font-size:10px">Chemical treat.</td><td style="font-size:10px">COA, cert letter</td><td><span class="badge badge-confirmed">✓</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">Halal</td><td style="font-size:10px">Alcohol contact</td><td style="font-size:10px">Halal cert</td><td><span class="badge badge-confirmed">✓</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">Organic</td><td style="font-size:10px">Syn. pesticides</td><td style="font-size:10px">Organic cert</td><td><span class="badge badge-confirmed">✓</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">FSSAI</td><td style="font-size:10px">Per product</td><td style="font-size:10px">Lab report</td><td><span class="badge badge-confirmed">✓</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">APEDA</td><td style="font-size:10px">Per commodity</td><td style="font-size:10px">EIC reg.</td><td><span class="badge badge-draft">—</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">FDA (US)</td><td style="font-size:10px">Per product</td><td style="font-size:10px">Prior notice</td><td><span class="badge badge-confirmed">✓</span></td></tr>
+        </tbody>
+      </table>
+      <div style="padding:8px 12px;font-size:10px;color:#64748b">Country label rules: EU · GCC · US · UK — auto-applied from shipping country on the order.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 09 — ANALYTICS & TRACKING
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 5</div>
+  <div class="slide-headline">Every order, every margin, every deadline — tracked in one place.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;font-weight:500;margin-bottom:2px">Live Order Tracker</div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>Order</th><th>Buyer</th><th>Stage</th><th>Deadline</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono" style="font-size:10px">SO-089</td>
+              <td style="font-size:10px">Al Barakah</td>
+              <td><span class="badge badge-accent">Packing</span></td>
+              <td style="font-size:10px;color:#10b981">Jan 14 ✓</td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:10px">SO-090</td>
+              <td style="font-size:10px">Euro Spices</td>
+              <td><span class="badge badge-pending">Sourcing</span></td>
+              <td style="font-size:10px;color:#d97706">Jan 20 ⚠</td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:10px">SO-091</td>
+              <td style="font-size:10px">Saffron House</td>
+              <td><span class="badge badge-draft">Quote sent</span></td>
+              <td style="font-size:10px;color:#94a3b8">Jan 28</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="kpi-card">
+          <div class="kpi-label">Orders this month</div>
+          <div class="kpi-val kpi-val-accent">14</div>
+          <div class="kpi-sub">↑ 3 vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg. margin</div>
+          <div class="kpi-val" style="color:#0f172a">11.8%</div>
+          <div class="kpi-sub">vs 10.2% last quarter</div>
+        </div>
+      </div>
+    </div>
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon"><i class="ti ti-chart-bar" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Revenue &amp; margin by buyer / SKU</div><div class="feat-body">See which clients and products are actually profitable — not just by volume, by margin.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-clock-check" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Deadline tracking with auto-alerts</div><div class="feat-body">Each order stage has a deadline. Alerts fire automatically — no daily follow-up needed from the owner.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-trending-up" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Seasonal &amp; buyer trend analysis</div><div class="feat-body">Spot which buyers order more in which months, which SKUs have growing demand, and plan procurement ahead.</div></div>
+      </li>
+      <li>
+        <div class="feat-icon"><i class="ti ti-stack" style="font-size:13px;color:#10b981"></i></div>
+        <div><div class="feat-title">Inventory &amp; lot tracking</div><div class="feat-body">Stock levels, lot numbers, godown locations — full traceability from sourcing to shipped batch.</div></div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE — ORDER TRACEABILITY
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 5 — Analytics &amp; Tracking · Full Audit Trail</div>
+  <div class="slide-headline">Every action, every delay, every change — timestamped and searchable.</div>
+  <div class="two-col">
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:12px">Order Timeline — SO-089</div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding-bottom:10px">
+        <div style="width:18px;height:18px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><i class="ti ti-check" style="font-size:10px;color:#16a34a"></i></div>
+        <div style="border-left:1.5px solid #e2e8f0;padding-left:10px;padding-bottom:10px;flex:1">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">Order received</div>
+          <div style="font-size:10px;color:#64748b">Jan 3, 9:14 AM · WhatsApp · Al Barakah</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding-bottom:10px">
+        <div style="width:18px;height:18px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><i class="ti ti-check" style="font-size:10px;color:#16a34a"></i></div>
+        <div style="border-left:1.5px solid #e2e8f0;padding-left:10px;padding-bottom:10px;flex:1">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">AI structured · Quote created</div>
+          <div style="font-size:10px;color:#64748b">Jan 3, 9:16 AM · auto · 2 min from intake</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding-bottom:10px">
+        <div style="width:18px;height:18px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><i class="ti ti-check" style="font-size:10px;color:#16a34a"></i></div>
+        <div style="border-left:1.5px solid #e2e8f0;padding-left:10px;padding-bottom:10px;flex:1">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">Quote accepted → Sales Order auto-raised</div>
+          <div style="font-size:10px;color:#64748b">Jan 6, 11:20 AM · buyer confirmation</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding-bottom:10px">
+        <div style="width:18px;height:18px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><i class="ti ti-alert-triangle" style="font-size:10px;color:#d97706"></i></div>
+        <div style="border-left:1.5px dashed #fde68a;padding-left:10px;padding-bottom:10px;flex:1">
+          <div style="font-size:11px;font-weight:600;color:#d97706">Packing delayed 2 days</div>
+          <div style="font-size:10px;color:#64748b">Jan 9, 10:45 AM · FSSAI certificate arrived late</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:18px;height:18px;background:#f1f5f9;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><i class="ti ti-clock" style="font-size:10px;color:#94a3b8"></i></div>
+        <div style="padding-left:10px;flex:1">
+          <div style="font-size:11px;font-weight:600;color:#94a3b8">Container loading</div>
+          <div style="font-size:10px;color:#94a3b8">Jan 14 · 5 days away</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card" style="padding:12px">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:8px">Ask anything about your orders</div>
+        <div style="background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:11px;color:#374151;font-style:italic">"Show orders where packing took more than 3 days"</div>
+        <div style="font-size:10px;color:#64748b;margin-top:6px;padding-left:2px">→ 3 orders found: SO-089, SO-087, SO-083</div>
+      </div>
+      <div class="alert-warn" style="margin:0">
+        <div style="font-weight:600;margin-bottom:2px">⚠ SO-090 packing is running 2.4× longer than usual</div>
+        <div style="font-size:10px">Avg stage: 1.8 days · This order: 4.2 days · Container date: Jan 20 · 11 days left</div>
+      </div>
+      <div class="card" style="padding:12px;border-left:3px solid #10b981">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:#10b981;margin-bottom:6px">AI Audit Summary — SO-089</div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">Received Jan 3 via WhatsApp. Quoted Jan 5, accepted Jan 6. Packing delayed 2 days — FSSAI certificate arrived late on Jan 9. Resumed immediately. On track for Jan 14 container loading.</div>
+      </div>
+      <div style="font-size:10px;color:#64748b;line-height:1.5">Every event is tamper-evident and timestamped. Full audit log available for FSSAI and DGFT compliance — no manual record-keeping needed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 — PURCHASE ORDERS
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">Module 6</div>
+  <div class="slide-headline">Quote confirmed → Sales Order → Purchase list. One click each.</div>
+  <div class="po-flow">
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;width:100%;align-items:center;margin-bottom:4px">
+      <div class="card" style="padding:12px 16px;border-left:3px solid #94a3b8">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.4px;color:#94a3b8;margin-bottom:6px">Quote</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="mono" style="font-size:12px">SGE-0047</span>
+          <span class="badge badge-draft">Accepted</span>
+        </div>
+        <div style="font-size:10px;color:#64748b;margin-top:4px">Al Barakah · 500kg Cinnamon · ₹14.8L FOB</div>
+      </div>
+      <div style="color:#10b981;font-size:18px;font-weight:700;text-align:center">→</div>
+      <div class="card" style="padding:12px 16px;border-left:3px solid #10b981">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.4px;color:#10b981;margin-bottom:6px">Sales Order — Auto-created</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="mono" style="font-size:12px">SO-2024-089</span>
+          <span class="badge badge-confirmed">Confirmed</span>
+        </div>
+        <div style="font-size:10px;color:#64748b;margin-top:4px">Kosher · 14 Jan deadline · 20ft container</div>
+      </div>
+    </div>
+    <div style="color:#10b981;font-size:20px;font-weight:700">↓</div>
+    <div class="po-three">
+      <div class="card" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">Raw Material PO</div>
+          <span class="badge badge-accent">Auto-generated</span>
+        </div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">Cinnamon sticks: <strong>520 kg</strong> (incl. 4% wastage)<br>Supplier: Ramesh Agro, Coimbatore<br>At market: ₹2,847/kg<br><strong>Total: ₹14,80,440</strong></div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">Packaging PO</div>
+          <span class="badge badge-accent">Auto-generated</span>
+        </div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">100g kraft packets × <strong>5,200</strong><br>HQ labels × 5,200 (both sides)<br>Cartons × <strong>217</strong></div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:600;color:#0f172a">Labour Estimate</div>
+          <span class="badge badge-accent">Auto-generated</span>
+        </div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">Estimated: <strong>3.2 days</strong> @ 8 workers<br>Rush surcharge: None (14-day lead)<br>Est. cost: ₹28,800</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#64748b;text-align:center">Packaging team notification sent automatically.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 11 — GROWTH FOR YOUR BUSINESS
+══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-eyebrow">What This Unlocks For You</div>
+  <div class="slide-headline">Same team. More orders. Better margins.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-bolt" style="color:#10b981"></i> Handle more orders without adding headcount</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">Order intake, structuring, quote generation, PO creation — all automated. Your team's capacity doubles without a new hire.</div>
+      </div>
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-clock-bolt" style="color:#10b981"></i> Faster quote turnaround = more orders won</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">When a buyer sends an RFQ today, you can turn a quote around today — not tomorrow after the re-entry is done. Speed wins deals.</div>
+      </div>
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-globe" style="color:#10b981"></i> Export to new countries without compliance risk</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">New market, new buyer, new certification requirements — the rules engine handles it. Your team doesn't need to know every regulation for every country.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-chart-line" style="color:#10b981"></i> Margin visibility across every order</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">Know which buyers, which SKUs, and which seasons actually make money. Stop growing volume on orders where margin is thin.</div>
+      </div>
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-heart-handshake" style="color:#10b981"></i> Fewer errors = better buyer relationships</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">No wrong carton sizes, no missed cert requirements, no re-packing calls. Buyers who trust your execution come back and send more volume.</div>
+      </div>
+      <div class="card card-accent-top" style="padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:7px"><i class="ti ti-users" style="color:#10b981"></i> Owner out of daily operations</div>
+        <div style="font-size:11px;color:#64748b;line-height:1.6">With automated task reminders, your team knows what to do and by when. You get status visibility without being the one who has to ask.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 12 — NEXT STEPS
+══════════════════════════════════════════════════ -->
+<div class="slide slide-white" style="padding:0">
+  <div class="close-wrap">
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%">
+      <div class="close-logo">T</div>
+      <div class="slide-headline-lg" style="margin-bottom:8px">TradeWind</div>
+      <div style="font-size:17px;color:#64748b;font-weight:400;margin-bottom:28px;max-width:500px;text-align:center;line-height:1.6">Built for how you actually work — WhatsApp orders, vendor prices, packaging constraints and all.</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:#94a3b8;margin-bottom:10px;font-weight:500">What your team gets from day one</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <span class="badge badge-accent" style="font-size:10px;padding:5px 12px">No re-entry on orders</span>
+        <span class="badge badge-accent" style="font-size:10px;padding:5px 12px">Stale price alerts before sending</span>
+        <span class="badge badge-accent" style="font-size:10px;padding:5px 12px">Packaging PO auto-generated</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /slides-track -->
+</div><!-- /deck-viewport -->
+
+<!-- Speaker notes -->
+<div class="speaker-notes" id="notes-box">
+  <div class="sn-label">Speaker Notes</div>
+  <div class="sn-text" id="notes-text"></div>
+</div>
+
+<script>
+const NOTES = [
+  "Open with: 'I want to show you what your order workflow looks like once your team stops doing it manually.' Don't pitch — show.",
+  "Pain #1: Ask 'How many orders this month came in as a photo or a WhatsApp message?' Pain #2: Ask 'After a container is booked, how do you track whether sourcing and packing are on schedule?' Pain #3: Ask 'How does your packaging floor find out about certification or label requirements for an order?' Let them answer each one.",
+  "This slide mirrors the three pains. Point left-to-right. 'Right now this costs your team hours. This is what it looks like after TradeWind is in place.'",
+  "Walk each step and say who on their team does it today. 'Who re-enters the order? Who calls the vendor? Who notifies the packaging floor?' Make it personal to their org.",
+  "Point to the flagged row. Say: 'That review flag means someone on your team gets a notification and approves it in one click — instead of it going out wrong and you finding out from the buyer.'",
+  "Point to the 'Vendor Price' column header. Clarify: 'These are prices your team enters from your vendor calls — TradeWind doesn't replace that relationship. MCX is just a reference alarm that tells you when to make that call.'",
+  "Walk the waterfall row by row: 'Each of these lines is calculated live — certification surcharge pulled from your rules, packaging cost from your config, FX rate locked from RBI the moment you save.' Point to the AI callout. Ask: 'If you sent a quote at 14% margin when your usual is 18% for that buyer, would you have known before it went out?'",
+  "Ask: 'For a Kosher or Halal order, how does your floor currently know which treatment method to use?' Then show the rule hierarchy. Emphasise: 'Any default can be overridden per order when your specific situation calls for it.'",
+  "Walk the constraint checks. 'Three green — stack height, weight, and Kosher co-loading all verified automatically. The amber one flags the ISPM 15 pallet treatment required for this EU shipment.' Ask: 'Who on your team currently knows to check for that before the container is booked?'",
+  "Point to the three-level hierarchy. Say: 'You configure once — certification, country, buyer. After that, every new order inherits the right rules automatically. And if a buyer has a specific requirement, you set it at their level and it overrides the rest.'",
+  "Ask: 'Right now, do you have a single place where you can see all open orders, what stage they're at, and whether any are at risk of missing their container date?' Show the tracker. That's what this gives you.",
+  "Walk the timeline step by step. 'Every action that touched this order has a name, a timestamp, and a source.' Point to the delay event: 'The system flagged it automatically and tells you why.' Show the NL query. 'Instead of filtering a spreadsheet, your ops manager just types the question.' Ask: 'How would you find that information today?'",
+  "Walk the flow top to bottom. 'Quote accepted — Sales Order raised automatically — three POs generated in seconds. Your team doesn't have to touch a spreadsheet to know what to buy or how much.'",
+  "Ask: 'If your team could handle 30% more orders next quarter without adding a person — what would that mean for the business?' Let them sit with it. Then walk the six cards.",
+  "Close with: 'Everything I showed you today is built specifically around how a food exporter works — not adapted from a generic ERP. What questions do you have?'"
+];
+
+let current = 0;
+const total = NOTES.length;
+const track = document.getElementById('track');
+const counter = document.getElementById('counter');
+const notesText = document.getElementById('notes-text');
+const dotsEl = document.getElementById('dots');
+
+// build dots
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n) {
+  current = Math.max(0, Math.min(total - 1, n));
+  track.style.transform = `translateX(-${current * 860}px)`;
+  counter.textContent = `${current + 1} / ${total}`;
+  notesText.textContent = NOTES[current];
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function go(dir) { goTo(current + dir); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+});
+
+goTo(0);
+</script>
+</body>
+</html>

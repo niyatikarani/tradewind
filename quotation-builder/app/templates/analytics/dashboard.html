@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+{% block topbar_actions %}
+<a href="/analytics/export/xlsx" class="btn-outline">Export XLSX</a>
+{% endblock %}
+{% block content %}
+<!-- KPI cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+  <div class="card p-5 text-center">
+    <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{{ total_quotes }}</p>
+    <p class="text-sm text-slate-500 dark:text-slate-400">Confirmed Quotes</p>
+  </div>
+  <div class="card p-5 text-center">
+    <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">&#8377;{{ '{:,.0f}'.format(total_revenue_inr) }}</p>
+    <p class="text-sm text-slate-500 dark:text-slate-400">Total Revenue (INR)</p>
+  </div>
+  <div class="card p-5 text-center">
+    <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{{ avg_margin }}%</p>
+    <p class="text-sm text-slate-500 dark:text-slate-400">Avg Margin</p>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+  <div class="card p-5 lg:col-span-2">
+    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Quotes Over Time</p>
+    <canvas id="quotesChart" height="80"></canvas>
+  </div>
+  <div class="card p-5">
+    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Top Products (Revenue INR)</p>
+    <table class="w-full text-sm">
+      {% for row in top_products %}
+      <tr class="border-b border-slate-100 dark:border-slate-700/50 last:border-0">
+        <td class="py-2 text-slate-600 dark:text-slate-300">{{ row.name }}</td>
+        <td class="py-2 text-right tabular-nums font-medium text-slate-900 dark:text-slate-100">&#8377;{{ '{:,.0f}'.format(row.revenue) }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="2" class="py-4 text-center text-slate-500 dark:text-slate-400 text-xs">No data yet.</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% if by_country %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+  <div class="card p-5">
+    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Revenue by Country (INR)</p>
+    <table class="w-full text-sm">
+      {% for row in by_country %}
+      <tr class="border-b border-slate-100 dark:border-slate-700/50 last:border-0">
+        <td class="py-2 text-slate-600 dark:text-slate-300">{{ row.name }}</td>
+        <td class="py-2 text-right tabular-nums font-medium text-slate-900 dark:text-slate-100">&#8377;{{ '{:,.0f}'.format(row.revenue) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+new Chart(document.getElementById('quotesChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: {{ quotes_chart['labels'] | tojson }},
+    datasets: [{ label: 'Confirmed Quotes', data: {{ quotes_chart['values'] | tojson }},
+      backgroundColor: '#10b981' }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } } }
+});
+</script>
+{% endblock %}

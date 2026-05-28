@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}System Settings{% endblock %}
+{% block page_title %}Rule Engine{% endblock %}
+{% block content %}
+<!-- Rule Engine sub-nav -->
+<div class="flex flex-wrap gap-1 mb-6 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+  <a href="/rule-engine" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">← Overview</a>
+  <a href="/rule-engine/margin" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Margin</a>
+  <a href="/rule-engine/factors" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Factors</a>
+  <a href="/rule-engine/countries" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Countries</a>
+  <a href="/rule-engine/clients" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Clients</a>
+  <a href="/rule-engine/currencies" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">FX Rates</a>
+  <a href="/rule-engine/cost-defaults" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Costs</a>
+  <a href="/rule-engine/audit" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Audit</a>
+</div>
+
+<div class="max-w-2xl">
+  <p class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">System Settings</p>
+  <div class="card p-5">
+    <form method="post" action="/rule-engine/system" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="form-label">Company Name (PDF)</label>
+          <input type="text" name="pdf_company_name" class="form-input"
+                 value="{{ settings.get('pdf_company_name', 'S&G Exports') }}" />
+        </div>
+        <div>
+          <label class="form-label">Company Address (PDF)</label>
+          <input type="text" name="pdf_company_address" class="form-input"
+                 value="{{ settings.get('pdf_company_address', '') }}" />
+        </div>
+        <div>
+          <label class="form-label">Quote Number Prefix</label>
+          <input type="text" name="quote_number_prefix" class="form-input w-32" maxlength="10"
+                 value="{{ settings.get('quote_number_prefix', 'SGE') }}" />
+        </div>
+      </div>
+      <div>
+        <label class="form-label">PDF Terms &amp; Conditions</label>
+        <textarea name="pdf_terms" class="form-input" rows="4">{{ settings.get('pdf_terms', '') }}</textarea>
+      </div>
+      <button type="submit" class="btn-primary">Save</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

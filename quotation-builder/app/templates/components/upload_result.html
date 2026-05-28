@@ -1,0 +1,47 @@
+<div class="space-y-3">
+  {% if valid %}
+  <div class="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+    {{ valid|length }} row(s) imported successfully.
+  </div>
+  {% endif %}
+
+  {% if flagged %}
+  <div class="rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-4 py-3 text-sm text-amber-700 dark:text-amber-400 mb-2">
+    {{ flagged|length }} row(s) need manual review.
+  </div>
+  <div class="card overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr>
+          <th class="table-header text-left">Row</th>
+          <th class="table-header text-left">Product (as entered)</th>
+          <th class="table-header text-left">Issue</th>
+          <th class="table-header text-left">Best Match</th>
+          <th class="table-header text-left">Confidence</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for f in flagged %}
+      <tr class="table-row">
+        <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ f.row }}</td>
+        <td class="px-4 py-3 text-slate-900 dark:text-slate-100">{{ f.raw_product }}</td>
+        <td class="px-4 py-3 text-amber-700 dark:text-amber-400">{{ f.reason }}</td>
+        <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ f.get('best_match', '—') }}</td>
+        <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ f.get('confidence', '—') }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if not valid and not flagged %}
+  <div class="rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
+    No rows found in the uploaded file.
+  </div>
+  {% endif %}
+
+  <a href="/quotes/{{ quote_id }}/items" class="btn-outline text-sm inline-flex items-center gap-2">
+    View Items →
+  </a>
+</div>

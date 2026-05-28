@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: sans-serif; font-size: 10pt; margin: 20px; }
+  h1 { font-size: 14pt; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th { background: #1F4E79; color: white; padding: 4px 6px; text-align: left; }
+  td { padding: 4px 6px; border-bottom: 1px solid #ddd; }
+  .footer { margin-top: 20px; font-size: 8pt; color: #555; }
+</style>
+</head>
+<body>
+<h1>{{ settings.get('pdf_company_name', 'S&G Exports') }}</h1>
+<p>{{ settings.get('pdf_company_address', '') }}</p>
+<hr/>
+<p><strong>Quote #:</strong> {{ quote.quote_number }} &nbsp;
+   <strong>Client:</strong> {{ quote.client_name }} &nbsp;
+   <strong>Country:</strong> {{ quote.country_name }} &nbsp;
+   <strong>Date:</strong> {{ quote.created_at[:10] }}</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th><th>Quality</th><th>Package</th>
+      <th>Qty (kg)</th><th>Cost/kg INR</th>
+      <th>Margin %</th><th>Price {{ quote.currency_code }}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.product_name }}</td>
+      <td>{{ item.quality_name }}</td>
+      <td>{{ item.package_name }}</td>
+      <td>{{ "%.2f"|format(item.quantity_kg) }}</td>
+      <td>{{ "%.2f"|format(item.cost_per_kg_inr) }}</td>
+      <td>{{ "%.1f"|format(item.margin_pct) }}%</td>
+      <td>{{ "%.4f"|format(item.get('selling_price_fx', 0)) }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div class="footer">{{ settings.get('pdf_terms', '') }}</div>
+</body>
+</html>

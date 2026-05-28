@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Container Settings{% endblock %}
+{% block page_title %}Rule Engine{% endblock %}
+{% block content %}
+<!-- Rule Engine sub-nav -->
+<div class="flex flex-wrap gap-1 mb-6 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+  <a href="/rule-engine" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">← Overview</a>
+  <a href="/rule-engine/margin" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Margin</a>
+  <a href="/rule-engine/factors" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Factors</a>
+  <a href="/rule-engine/countries" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Countries</a>
+  <a href="/rule-engine/clients" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Clients</a>
+  <a href="/rule-engine/currencies" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">FX Rates</a>
+  <a href="/rule-engine/cost-defaults" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Costs</a>
+  <a href="/rule-engine/audit" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Audit</a>
+</div>
+
+<div class="max-w-2xl">
+  <p class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">Container Limits</p>
+  <div class="card p-5">
+    <form method="post" action="/rule-engine/containers" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label">20ft Max CBM</label>
+          <input type="number" step="0.1" name="container_20ft_cbm" class="form-input"
+                 value="{{ settings.get('container_20ft_cbm', '28') }}" />
+        </div>
+        <div>
+          <label class="form-label">20ft Max kg</label>
+          <input type="number" name="container_20ft_kg" class="form-input"
+                 value="{{ settings.get('container_20ft_kg', '21700') }}" />
+        </div>
+        <div>
+          <label class="form-label">40ft Max CBM</label>
+          <input type="number" step="0.1" name="container_40ft_cbm" class="form-input"
+                 value="{{ settings.get('container_40ft_cbm', '56') }}" />
+        </div>
+        <div>
+          <label class="form-label">40ft Max kg</label>
+          <input type="number" name="container_40ft_kg" class="form-input"
+                 value="{{ settings.get('container_40ft_kg', '26500') }}" />
+        </div>
+      </div>
+      <button type="submit" class="btn-primary">Save</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

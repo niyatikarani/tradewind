@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Country Profiles{% endblock %}
+{% block page_title %}Rule Engine{% endblock %}
+{% block content %}
+<!-- Rule Engine sub-nav -->
+<div class="flex flex-wrap gap-1 mb-6 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+  <a href="/rule-engine" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">← Overview</a>
+  <a href="/rule-engine/margin" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Margin</a>
+  <a href="/rule-engine/factors" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Factors</a>
+  <a href="/rule-engine/countries" class="px-3 py-1.5 rounded-md text-xs font-medium bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm">Countries</a>
+  <a href="/rule-engine/clients" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Clients</a>
+  <a href="/rule-engine/currencies" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">FX Rates</a>
+  <a href="/rule-engine/cost-defaults" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Costs</a>
+  <a href="/rule-engine/audit" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors">Audit</a>
+</div>
+
+<p class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">Countries</p>
+
+<div class="card p-4 mb-5">
+  <form method="post" action="/rule-engine/countries/new" class="flex flex-wrap gap-3 items-end">
+    <div>
+      <label class="form-label">Country name</label>
+      <input name="name" class="form-input w-40" placeholder="Country name" required />
+    </div>
+    <div>
+      <label class="form-label">Code</label>
+      <input name="code" class="form-input w-20" placeholder="e.g. US" maxlength="3" required />
+    </div>
+    <div>
+      <label class="form-label">Currency</label>
+      <select name="currency_id" class="form-input w-28" required>
+        {% for c in currencies %}<option value="{{ c.id }}">{{ c.code }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Sanitization</label>
+      <select name="sanitization" class="form-input w-32">
+        <option value="steam">Steam</option>
+        <option value="chemical">Chemical</option>
+        <option value="none">None</option>
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Risk (1-5)</label>
+      <input name="risk_score" type="number" min="1" max="5" value="3" class="form-input w-20" />
+    </div>
+    <div>
+      <button type="submit" class="btn-primary">Add</button>
+    </div>
+  </form>
+</div>
+
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Name</th>
+        <th class="table-header text-left">Code</th>
+        <th class="table-header text-left">Currency</th>
+        <th class="table-header text-left">Sanitization</th>
+        <th class="table-header text-left">Risk Score</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for c in countries %}
+    <tr class="table-row">
+      <td class="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{{ c.name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ c.code }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ c.currency_code or '—' }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ c.default_sanitization or '—' }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ c.risk_score or '—' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

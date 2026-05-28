@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Price Trends{% endblock %}
+{% block page_title %}Price Trends{% endblock %}
+{% block topbar_actions %}
+<a href="/prices/entry" class="btn-outline">← Price Entry</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-3xl">
+  <div class="card p-5 mb-5">
+    <form method="get" action="/prices/trends" class="flex flex-wrap gap-4 items-end">
+      <div>
+        <label class="form-label">Product</label>
+        <select name="product_id" class="form-input w-44" onchange="this.form.submit()">
+          <option value="">— select product —</option>
+          {% for p in products %}
+          <option value="{{ p.id }}" {% if selected_product == p.id|string %}selected{% endif %}>{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% if qualities %}
+      <div>
+        <label class="form-label">Quality</label>
+        <select name="quality_id" class="form-input w-40" onchange="this.form.submit()">
+          <option value="">— select quality —</option>
+          {% for q in qualities %}
+          <option value="{{ q.id }}" {% if selected_quality == q.id|string %}selected{% endif %}>{{ q.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+    </form>
+  </div>
+
+  {% if chart_data %}
+  <div class="card p-5">
+    <canvas id="trendChart" height="100"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('trendChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: {{ chart_data.labels | tojson }},
+      datasets: [{ label: 'Price/kg (INR)', data: {{ chart_data.values | tojson }},
+        borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)', tension: 0.3, fill: true }]
+    },
+    options: { responsive: true, plugins: { legend: { display: true } } }
+  });
+  </script>
+  {% else %}
+  <div class="card p-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+    Select a product and quality to view the price trend.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

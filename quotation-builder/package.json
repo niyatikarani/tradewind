@@ -1,0 +1,7 @@
+{
+  "name": "sng-exports-ui",
+  "version": "1.0.0",
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Price Entry{% endblock %}
+{% block page_title %}Price Entry{% endblock %}
+{% block topbar_actions %}
+<a href="/prices/bulk" class="btn-outline">Bulk Entry</a>
+<a href="/prices/stale" class="btn-outline">Stale Report</a>
+<a href="/prices/trends" class="btn-outline">Trends</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+  {% if success %}
+  <div class="mb-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+    Price saved successfully.
+  </div>
+  {% endif %}
+
+  <div class="card p-6">
+    <form method="post" action="/prices/entry" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="form-label">Product</label>
+          <select name="product_id" class="form-input" required id="product-sel">
+            <option value="">— select —</option>
+            {% for p in products %}
+            <option value="{{ p.id }}">{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Quality</label>
+          <select name="quality_id" id="quality-sel" class="form-input" required>
+            <option value="">— select product first —</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Price / kg (INR)</label>
+          <input type="number" step="0.01" name="price_per_kg" class="form-input" required />
+        </div>
+        <div>
+          <label class="form-label">Vendor Name</label>
+          <input type="text" name="vendor_name" class="form-input" />
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn-primary">Save Price</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  var QUALITIES = {{ qualities_json | safe }};
+  var productSel = document.getElementById('product-sel');
+  var qualitySel = document.getElementById('quality-sel');
+
+  function updateQualities() {
+    var pid = productSel.value;
+    qualitySel.innerHTML = '';
+    if (!pid) {
+      qualitySel.add(new Option('— select product first —', ''));
+      return;
+    }
+    var opts = QUALITIES[pid] || [];
+    if (opts.length === 0) {
+      qualitySel.add(new Option('— no qualities found —', ''));
+      return;
+    }
+    qualitySel.add(new Option('— select quality —', ''));
+    opts.forEach(function(q) {
+      qualitySel.add(new Option(q.name, q.id));
+    });
+  }
+
+  productSel.addEventListener('change', updateQualities);
+})();
+</script>
+{% endblock %}

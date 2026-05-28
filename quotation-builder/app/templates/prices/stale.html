@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Stale Prices{% endblock %}
+{% block page_title %}Stale Price Dashboard{% endblock %}
+{% block topbar_actions %}
+<a href="/prices/entry" class="btn-outline">← Price Entry</a>
+{% endblock %}
+{% block content %}
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Prices older than the configured threshold are highlighted.</p>
+
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Product</th>
+        <th class="table-header text-left">Quality</th>
+        <th class="table-header text-right">Latest Price</th>
+        <th class="table-header text-right">Age (days)</th>
+        <th class="table-header text-left">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+    <tr class="table-row {% if item.is_stale %}bg-red-50/50 dark:bg-red-950/10{% endif %}">
+      <td class="px-4 py-3 text-slate-900 dark:text-slate-100">{{ item.product_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ item.quality_name }}</td>
+      <td class="px-4 py-3 text-right tabular-nums text-slate-600 dark:text-slate-300">
+        {{ '%.2f'|format(item.latest_price) if item.latest_price else '—' }}
+      </td>
+      <td class="px-4 py-3 text-right tabular-nums text-slate-600 dark:text-slate-300">
+        {{ item.age_days if item.age_days is not none else '∞' }}
+      </td>
+      <td class="px-4 py-3">
+        {% if item.is_stale %}
+          <span class="badge-stale">Stale</span>
+        {% else %}
+          <span class="badge-confirmed">Fresh</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No price data found.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

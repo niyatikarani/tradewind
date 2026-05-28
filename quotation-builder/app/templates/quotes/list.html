@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Quotes{% endblock %}
+{% block page_title %}Quotes{% endblock %}
+{% block topbar_actions %}
+<a href="/quotes/new" class="btn-primary">+ New Quote</a>
+{% endblock %}
+{% block content %}
+<div class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th class="table-header text-left">Quote #</th>
+        <th class="table-header text-left">Client</th>
+        <th class="table-header text-left">Country</th>
+        <th class="table-header text-left">Currency</th>
+        <th class="table-header text-left">Status</th>
+        <th class="table-header text-left">Created</th>
+        <th class="table-header text-left"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for q in quotes %}
+    <tr class="table-row">
+      <td class="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{{ q.quote_number }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ q.client_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ q.country_name }}</td>
+      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ q.currency_code }}</td>
+      <td class="px-4 py-3">
+        {% if q.status == 'confirmed' %}
+          <span class="badge-confirmed">{{ q.status }}</span>
+        {% elif q.status == 'cancelled' %}
+          <span class="badge-cancelled">{{ q.status }}</span>
+        {% else %}
+          <span class="badge-draft">{{ q.status }}</span>
+        {% endif %}
+        {% if q.has_stale_override %}
+          <span class="badge-stale ml-1">Stale Override</span>
+        {% endif %}
+      </td>
+      <td class="px-4 py-3 text-slate-500 dark:text-slate-400">{{ q.created_at[:10] }}</td>
+      <td class="px-4 py-3">
+        <div class="flex items-center gap-2">
+          <a href="/quotes/{{ q.id }}/review" class="btn-outline py-1 px-3 text-xs">View</a>
+          <form action="/quotes/{{ q.id }}/duplicate" method="post" class="inline">
+            <button class="btn-outline py-1 px-3 text-xs">Duplicate</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No quotes yet. Create your first quote to get started.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

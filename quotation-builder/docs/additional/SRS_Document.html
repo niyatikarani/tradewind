@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRS — S &amp; G Exports Quotation Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root { --blue: #1B2A4A; --med-blue: #2E5090; --green: #548235; --orange: #ED7D31; --red: #C00000; --purple: #7030A0; --cyan: #00B0F0; --bg: #FAFBFC; --card: #FFFFFF; --border: #E5E7EB; --text: #1F2937; --text-secondary: #6B7280; --text-muted: #9CA3AF; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+  @media print { body { background: white; font-size: 11pt; } .cover { break-after: page; } .toc { break-after: page; } .section { break-before: page; } .container { max-width: 100%; padding: 0 20px; } .tbl, .db-row, .screen-card, .phase, .hierarchy-row { break-inside: avoid; } }
+  .cover { background: linear-gradient(135deg, #1B2A4A 0%, #2E5090 50%, #3a6bc5 100%); color: white; padding: 80px 60px; text-align: center; position: relative; overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+  .cover::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.04) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255,255,255,0.03) 0%, transparent 50%); }
+  .cover-logo { width: 120px; height: auto; border-radius: 12px; margin-bottom: 32px; position: relative; background: white; padding: 8px; }
+  .cover-label { font-size: 12px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; opacity: 0.6; margin-bottom: 24px; position: relative; }
+  .cover h1 { font-family: 'DM Serif Display', serif; font-size: 44px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; position: relative; }
+  .cover .company-name { font-size: 22px; font-weight: 700; letter-spacing: 1px; opacity: 0.9; margin-bottom: 8px; position: relative; }
+  .cover h2 { font-size: 18px; font-weight: 400; opacity: 0.6; margin-bottom: 40px; position: relative; }
+  .cover-meta { display: flex; justify-content: center; gap: 40px; font-size: 13px; opacity: 0.5; position: relative; }
+  .cover-contact { margin-top: 40px; font-size: 12px; opacity: 0.4; position: relative; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 32px; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px 40px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--blue); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+  .toc-list { list-style: none; }
+  .toc-list li { padding: 6px 0; font-size: 14px; color: var(--med-blue); font-weight: 500; }
+  .toc-list li.sub { padding-left: 24px; color: var(--text-secondary); font-weight: 400; font-size: 13px; }
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 3px solid var(--blue); }
+  .section-icon { font-size: 32px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #f0f4ff; }
+  .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--blue); }
+  h3 { font-size: 18px; font-weight: 700; color: var(--med-blue); margin: 32px 0 12px; }
+  h4 { font-size: 15px; font-weight: 700; color: var(--green); margin: 24px 0 8px; }
+  p { margin-bottom: 12px; }
+  .tbl { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin: 16px 0 24px; font-size: 13px; }
+  .tbl thead th { background: var(--blue); color: white; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; text-align: left; }
+  .tbl tbody td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: top; line-height: 1.5; }
+  .tbl tbody tr:nth-child(even) { background: #fafafa; }
+  .tbl tbody tr:last-child td { border-bottom: none; }
+  .tbl.purple thead th { background: var(--purple); }
+  .tbl.green thead th { background: var(--green); }
+  .tbl.red thead th { background: var(--red); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+  .badge.must { background: #E2EFDA; color: #548235; }
+  .badge.should { background: #D6E4F0; color: #2E5090; }
+  .badge.could { background: #FBE5D6; color: #ED7D31; }
+  .badge.scope-global { background: #F2F2F2; color: #666; }
+  .badge.scope-country { background: #D6E4F0; color: #2E5090; }
+  .badge.scope-client { background: #FBE5D6; color: #ED7D31; }
+  .badge.scope-product { background: #E2EFDA; color: #548235; }
+  .badge.scope-mixed { background: #E8D5F5; color: #7030A0; }
+  .req-id { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: #999; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+  .code-block { background: #1e293b; color: #e2e8f0; padding: 16px 20px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; margin: 16px 0; overflow-x: auto; white-space: pre; }
+  .hierarchy-row { display: grid; grid-template-columns: 90px 150px 1fr; padding: 12px 16px; gap: 12px; border-bottom: 1px solid #e5e7eb; align-items: center; font-size: 13px; }
+  .hierarchy-row:last-child { border-bottom: none; }
+  .hierarchy-priority { font-weight: 900; font-size: 13px; text-align: center; color: #444; }
+  .hierarchy-scope { font-weight: 700; }
+  .phase { display: grid; grid-template-columns: 48px 72px 1fr 160px; gap: 12px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); margin: 6px 0; align-items: center; }
+  .phase-num { font-weight: 900; font-size: 22px; color: var(--blue); text-align: center; }
+  .phase-dur { font-weight: 700; font-size: 14px; }
+  .phase-desc { font-size: 13px; line-height: 1.5; }
+  .phase-mods { font-size: 11px; color: #666; font-weight: 600; text-align: right; }
+  .phase-total { background: var(--blue); color: white; padding: 14px; border-radius: 10px; text-align: center; margin-top: 8px; font-weight: 800; font-size: 16px; }
+  .db-row { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; margin: 4px 0; align-items: center; }
+  .db-row.highlight { background: #f8f4ff; }
+  .db-name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; }
+  .db-cols { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #666; line-height: 1.6; }
+  .screen-card { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 6px 0; }
+  .screen-left { padding: 12px 16px; background: #f8f4ff; }
+  .screen-name { font-weight: 800; font-size: 14px; color: var(--purple); margin-bottom: 4px; }
+  .screen-what { font-size: 12px; color: #555; line-height: 1.4; }
+  .screen-right { padding: 12px 16px; font-size: 12px; color: #666; display: flex; align-items: center; }
+  ul { margin: 8px 0 16px 24px; }
+  li { margin-bottom: 6px; }
+  .callout { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout strong { color: var(--blue); }
+  .callout-red { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout-red strong { color: var(--red); }
+  .callout-purple { background: #F5F0FF; border: 1px solid #DDD6FE; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout-purple strong { color: var(--purple); }
+  .new-tag { display: inline-block; background: var(--red); color: white; padding: 1px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; vertical-align: middle; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <img src="https://sandgexports.com/wp-content/uploads/2023/01/JPEG.jpg" alt="S &amp; G Exports" class="cover-logo" onerror="this.style.display='none'">
+  <div class="cover-label">Software Requirements &amp; Technical Solution</div>
+  <h1>Export Quotation Builder</h1>
+  <div class="company-name">S &amp; G Exports</div>
+  <h2>Spice &amp; Food Products • Mumbai, India</h2>
+  <div class="cover-meta"><span>Version 3.0</span><span>April 2026</span><span>24 Tables • 36 Dev Days</span></div>
+  <div class="cover-contact">sandgexports.com • trade@sandgexports.com • +91-9820-023-495</div>
+</div>
+<div class="container">
+<div class="toc"><h2>Table of Contents</h2><ul class="toc-list">
+  <li>1. System Overview</li>
+  <li>2. Technology Stack</li>
+  <li>3. Functional Requirements</li>
+  <li class="sub">3.1 IAM &amp; Feature-Based RBAC <span class="new-tag">New</span> • 3.2 Excel Upload <span class="new-tag">New</span> • 3.3 Prices • 3.4 Trends • 3.5 Quotes • 3.6 Manual Override <span class="new-tag">New</span> • 3.7 Duplication • 3.8 Margin • 3.9 Currency • 3.10 Country • 3.11 Analytics</li>
+  <li>4. Business Rule Engine (13 Screens)</li>
+  <li>5. Stale Price Blocking <span class="new-tag">New</span></li>
+  <li>6. Database Design (24 tables)</li>
+  <li>7. Non-Functional Requirements</li>
+  <li>8. Application Architecture</li>
+  <li>9. Development Plan (36 days)</li>
+  <li>10. Plain English Explanation (for non-tech readers)</li>
+</ul></div>
+
+<div class="section"><div class="section-header"><div class="section-icon">🎯</div><h2>1. System Overview</h2></div>
+<h3>1.1 Purpose</h3>
+<p>Web-based quotation management system for <strong>S &amp; G Exports</strong>, a spice and food products export firm based in Mumbai. Replaces manual spreadsheet estimation with adaptive margins, multi-currency quotations, on-demand price tracking (prices updated when orders come in, not on a fixed daily schedule), container logistics, analytics, Excel-based bulk order upload, feature-level access control, and a centralized business rule engine.</p>
+<h3>1.2 Operating Context</h3>
+<table class="tbl"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+<tr><td><strong>Daily order queries</strong></td><td>~100 per day</td></tr>
+<tr><td><strong>Concurrent users</strong></td><td>3–5 simultaneous</td></tr>
+<tr><td><strong>Product catalog</strong></td><td>90+ products, 200+ quality variants</td></tr>
+<tr><td><strong>Package sizes</strong></td><td>18 standard (20g–25kg), expandable</td></tr>
+<tr><td><strong>Target currencies</strong></td><td>USD, INR, EUR, GBP, AED, CAD, AUD</td></tr>
+<tr><td><strong>Backup</strong></td><td>5-day rolling backup to OneDrive (org Microsoft 365)</td></tr>
+<tr><td><strong>Budget</strong></td><td>₹0–500/month hosting</td></tr>
+</tbody></table></div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--green);"><div class="section-icon" style="background:#f0fff0;">⚡</div><h2>2. Technology Stack</h2></div>
+<table class="tbl green"><thead><tr><th>Layer</th><th>Technology</th><th>Rationale</th></tr></thead><tbody>
+<tr><td><strong>Database</strong></td><td><strong style="color:var(--med-blue)">SQLite</strong></td><td>Zero config, single-file, 100K+ writes/day. Free.</td></tr>
+<tr><td><strong>Backend</strong></td><td><strong style="color:var(--green)">Python Flask</strong></td><td>Lightweight. Built-in SQLite. Free.</td></tr>
+<tr><td><strong>ORM</strong></td><td><strong>Flask-SQLAlchemy + Alembic</strong></td><td>Safe DB ops. Schema migrations.</td></tr>
+<tr><td><strong>Frontend</strong></td><td><strong style="color:var(--orange)">Jinja2 + HTMX + Bootstrap 5</strong></td><td>Server-rendered. No build step.</td></tr>
+<tr><td><strong>Excel Parsing</strong></td><td><strong>openpyxl</strong></td><td>Parse uploaded .xlsx order files.</td></tr>
+<tr><td><strong>Charts</strong></td><td><strong>Chart.js (CDN)</strong></td><td>Price trends, analytics.</td></tr>
+<tr><td><strong>FX Rates</strong></td><td><strong>exchangerate-api.com</strong></td><td>Free: 1,500 calls/month.</td></tr>
+<tr><td><strong>PDF Export</strong></td><td><strong>WeasyPrint</strong></td><td>HTML → PDF. Free. No external API.</td></tr>
+<tr><td><strong>Excel/CSV Export</strong></td><td><strong>openpyxl + csv (stdlib)</strong></td><td>Export quotes, analytics, price data as .xlsx or .csv. Free.</td></tr>
+<tr><td><strong>Auth / IAM</strong></td><td><strong>Flask-Login + bcrypt + custom RBAC</strong></td><td>Feature-based permissions per user.</td></tr>
+<tr><td><strong>Backup</strong></td><td><strong>rclone → OneDrive</strong></td><td>5-day rolling via org Microsoft 365.</td></tr>
+<tr><td><strong>Hosting</strong></td><td><strong style="color:var(--med-blue)">Railway / Render / VPS</strong></td><td>Free tier or ₹500/mo.</td></tr>
+</tbody></table></div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--orange);"><div class="section-icon" style="background:#fff8f0;">📋</div><h2>3. Functional Requirements</h2></div>
+<p><span class="badge must">Must</span> = launch blocker, <span class="badge should">Should</span> = high value, <span class="badge could">Could</span> = post-launch.</p>
+
+<h3>3.1 IAM &amp; Feature-Based RBAC <span class="new-tag">New</span></h3>
+<div class="callout-purple"><strong>Key Design:</strong> Every feature is a toggleable permission. Admin assigns features per employee. Today 5 features, tomorrow 6. Create any combination: "Super User" = Price Updater + Quote Builder + stale override, but NOT master data editor.</div>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-001</td><td><strong>Feature-based RBAC.</strong> Every screen/action is a named feature (<code>price.entry</code>, <code>quote.create</code>, <code>admin.master_data</code>). Each user has assigned features.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-002</td><td>Admin creates employees with name, email, password, and a <strong>feature checklist</strong> (every feature with on/off toggle).</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-003</td><td>Nav/buttons/screens dynamically shown/hidden based on user's features. No feature = route doesn't exist.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-004</td><td>Admin can modify features at any time. Changes effective on next page load.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-005</td><td>Predefined templates: "Price Updater", "Quote Builder", "Super User" (price+quote+stale override), "Admin" (all).</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-006</td><td>All data modifications logged with user ID and timestamp.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+<h4>Feature Registry</h4>
+<table class="tbl"><thead><tr><th>Feature Key</th><th>Description</th><th>Default Templates</th></tr></thead><tbody>
+<tr><td><code>price.entry</code></td><td>Enter/update vendor prices</td><td>Price Updater, Super User, Admin</td></tr>
+<tr><td><code>price.bulk</code></td><td>Bulk price entry</td><td>Price Updater, Super User, Admin</td></tr>
+<tr><td><code>price.trends</code></td><td>View price trend charts</td><td>Super User, Admin</td></tr>
+<tr><td><code>price.stale_dashboard</code></td><td>View stale price dashboard</td><td>Price Updater, Super User, Admin</td></tr>
+<tr><td><code>quote.create</code></td><td>Create quotations</td><td>Quote Builder, Super User, Admin</td></tr>
+<tr><td><code>quote.list</code></td><td>View quote listing</td><td>Quote Builder, Super User, Admin</td></tr>
+<tr><td><code>quote.duplicate</code></td><td>Duplicate quotes</td><td>Quote Builder, Super User, Admin</td></tr>
+<tr><td><code>quote.export</code></td><td>Generate PDF / XLSX / CSV exports</td><td>Quote Builder, Super User, Admin</td></tr>
+<tr><td><code>quote.upload_excel</code></td><td>Upload Excel order files</td><td>Quote Builder, Super User, Admin</td></tr>
+<tr><td><code>quote.stale_override</code></td><td>Override stale price block</td><td>Super User, Admin</td></tr>
+<tr><td><code>quote.manual_override</code></td><td>Override any calculated field</td><td>Super User, Admin</td></tr>
+<tr><td><code>analytics.view</code></td><td>View analytics dashboard</td><td>Super User, Admin</td></tr>
+<tr><td><code>admin.master_data</code></td><td>Edit products, sizes, rates</td><td>Admin only</td></tr>
+<tr><td><code>admin.users</code></td><td>Manage employees &amp; features</td><td>Admin only</td></tr>
+<tr><td><code>rule_engine.*</code></td><td>Rule Engine (each screen = sub-feature)</td><td>Admin only</td></tr>
+</tbody></table>
+
+<h3>3.2 Excel Order Upload <span class="new-tag">New</span></h3>
+<div class="callout"><strong>Workflow:</strong> Marketing sends fixed-format Excel to client → client fills → marketing uploads → system validates &amp; pre-fills quote → operator reviews → quote generated. Manual form entry stays as-is.</div>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-010</td><td>Downloadable <strong>Excel template</strong> (.xlsx): Product, Quality, Pkg Type, Pkg Size, Qty (Kg), Label Type, Label Sides, Sanitization, Certification, Pkts/Carton, Notes.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-011</td><td>Upload → parse → <strong>validation report</strong>: green (valid), yellow (warnings/stale), red (errors/unknown product).</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-012</td><td>Valid rows auto-populate quote wizard Step 2. Invalid rows flagged for manual fix.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-013</td><td>Fuzzy matching for product names (e.g., "Tumeric Pwd" → "Turmeric Powder"). Below 80% confidence = manual review.</td><td><span class="badge should">Should</span></td></tr>
+<tr><td class="req-id">FR-014</td><td>Manual form entry (Step 2 wizard) continues to work identically. Upload is an alternative.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.3 Vendor Price Management</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-020</td><td>Append-only price entry. Latest row = current price. Prices updated <strong>on need basis</strong> — when an order comes in for that product, not on a fixed daily schedule. Full history preserved.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-021</td><td>Auto-complete search. Quality grades with price + age.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-022</td><td>Stale Price Dashboard: shows products whose prices are older than threshold. Serves as a <strong>pre-quote checklist</strong> — operator checks this before building a quote to see which products need a fresh price call. Bulk Entry Mode for entering multiple prices after one dealer call.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-022a</td><td><strong>Quote-triggered price check:</strong> When building a quote (Step 2), the system highlights any SKU whose price is stale or missing with a yellow/red badge and a "Update Price" shortcut button. Clicking it opens a mini price-entry form inline (without leaving the quote wizard), so the operator can call the dealer and enter the fresh price right there.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.4 Price Trend Charts</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-030</td><td>Line chart per product+quality. Period: 7d/30d/90d/1y. Hover: price, vendor, date.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-031</td><td>±X% band. Multi-quality overlay.</td><td><span class="badge should">Should</span></td></tr>
+</tbody></table>
+
+<h3>3.5 Quotation Builder</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-040</td><td>Wizard: Step 1 (Client) → Step 2 (SKUs: manual OR Excel upload) → Step 3 (Review) → Step 4 (Export).</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-041</td><td>Cascading dropdowns. Auto-fills price with stale warning. Live cost preview. Container auto-recommendation.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-042</td><td>Status: Draft → Pending Approval → Sent → Accepted / Rejected / Revised.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-043</td><td>All values snapshot-frozen. Future price changes don't alter existing quotes.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.6 Manual Field Override <span class="new-tag">New</span></h3>
+<div class="callout-red"><strong>Principle:</strong> Any calculated field on any table can be manually edited. Override saves a flag (<code>is_overridden = true</code>), preserves original value, and creates an audit entry. Requires <code>quote.manual_override</code> feature.</div>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-050</td><td>Click any calculated field → enter new value → optional reason → save. Overridden fields marked with orange border + ✏️ icon.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-051</td><td>Original value preserved. "Reset to calculated" button restores it.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-052</td><td>Audit log: field, original, new, user, timestamp, reason.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-053</td><td>Requires <code>quote.manual_override</code> feature. Without it, fields are read-only.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.7 Quote Duplication</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-060</td><td>One-click duplicate. Auto-refreshes prices. Highlights changes. Revision chain.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.8 Adaptive Margin &amp; Discount Engine</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-070</td><td>7 weighted factors (all configurable via Rule Engine). Discount mode toggle. Guardrails: floor, cap, admin approval.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+
+<h3>3.9 Multi-Currency • 3.10 Country Defaults • 3.11 Analytics</h3>
+<table class="tbl"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-080</td><td>USD, INR, EUR, GBP, AED, CAD, AUD. FX rates auto-fetched from API (daily or on-demand). Vendor prices are <strong>not</strong> auto-fetched — they are entered manually when needed for an order. FX variation buffer per currency.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-090</td><td>Per-country defaults (sanitization, certs, currency, risk). Auto-applied. Overridable.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-100</td><td>KPI cards, Quotes Over Time, Top Products, Revenue by Country, Margin Analysis, Client Analysis.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table>
+</div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--purple);"><div class="section-icon" style="background:#f8f0ff;">⚙️</div><h2>4. Business Rule Engine</h2></div>
+<p>Centralized admin-only interface. 13 screens. Every configurable parameter in one place. Override hierarchy: Client+Product > Client > Country+Product > Country > Product > Global.</p>
+<h3>4.1 Margin Rules</h3>
+<table class="tbl purple"><thead><tr><th>Rule</th><th>Default</th><th>Scope</th></tr></thead><tbody>
+<tr><td>Base Margin %</td><td>10%</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td>Margin Floor</td><td>3%</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td>Margin Cap</td><td>25%</td><td><span class="badge scope-mixed">Global / Product</span></td></tr>
+<tr><td>Client Floor Override</td><td>Per-client</td><td><span class="badge scope-client">Client</span></td></tr>
+<tr><td>7 Factors: Volume, Advance, History, Competition, Volatility, Country Risk, Urgency</td><td>Configurable weights + scoring tiers</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td>Discount Mode + List Prices</td><td>Enabled</td><td><span class="badge scope-global">Global</span></td></tr>
+</tbody></table>
+<h3>4.2 Country + Client + Cost + System Rules</h3>
+<table class="tbl purple"><thead><tr><th>Category</th><th>Rules</th><th>Scope</th></tr></thead><tbody>
+<tr><td><strong>Country</strong></td><td>Sanitization, certs, currency, risk score, notes, product-country overrides</td><td><span class="badge scope-country">Country</span></td></tr>
+<tr><td><strong>Client</strong></td><td>Floor/cap/discount overrides, payment risk, credit terms, packaging prefs, price locks</td><td><span class="badge scope-client">Client</span></td></tr>
+<tr><td><strong>Costs</strong></td><td>Transport ₹1.50/kg, Loading ₹0.80/kg, CHA ₹25K, Customs ₹15K</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td><strong>Alerts</strong></td><td>Stale days (7), price change % (10), volatility window (30d)</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td><strong>Currency</strong></td><td>Active toggles, FX variation per currency</td><td><span class="badge scope-mixed">Currency</span></td></tr>
+<tr><td><strong>Container</strong></td><td>20ft: 28 CBM / 21,700 Kg. 40ft: 56 CBM / 26,500 Kg</td><td><span class="badge scope-global">Global</span></td></tr>
+<tr><td><strong>System</strong></td><td>Session timeout, quote numbering, approval workflow, backup, PDF branding, T&C</td><td><span class="badge scope-global">Global</span></td></tr>
+</tbody></table>
+<h3>4.3 Override Hierarchy</h3>
+<div style="border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:16px 0;">
+<div class="hierarchy-row" style="background:#FCE4EC;"><div class="hierarchy-priority">1 ▲</div><div class="hierarchy-scope">Client + Product</div><div style="color:#555">Locked price overrides everything.</div></div>
+<div class="hierarchy-row" style="background:#FBE5D6;"><div class="hierarchy-priority">2</div><div class="hierarchy-scope">Client</div><div style="color:#555">Client's margin floor overrides global.</div></div>
+<div class="hierarchy-row" style="background:#FFF8E1;"><div class="hierarchy-priority">3</div><div class="hierarchy-scope">Country + Product</div><div style="color:#555">Product-specific country override.</div></div>
+<div class="hierarchy-row" style="background:#D6E4F0;"><div class="hierarchy-priority">4</div><div class="hierarchy-scope">Country</div><div style="color:#555">Country-level defaults.</div></div>
+<div class="hierarchy-row" style="background:#E2EFDA;"><div class="hierarchy-priority">5</div><div class="hierarchy-scope">Product</div><div style="color:#555">Product competition level.</div></div>
+<div class="hierarchy-row" style="background:#F2F2F2;"><div class="hierarchy-priority">6 ▼</div><div class="hierarchy-scope">Global</div><div style="color:#555">System defaults.</div></div>
+</div>
+<h3>4.4 Rule Engine UI — 13 Screens</h3>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">1. Margin Rules</div><div class="screen-what">Base, floor, cap, discount toggle.</div></div><div class="screen-right">Form + toggles.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">2. Margin Factors</div><div class="screen-what">7 factors: weights + tiers.</div></div><div class="screen-right">Accordion + editable rows.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">3. List Prices</div><div class="screen-what">Product+quality+size prices.</div></div><div class="screen-right">Search, inline edit, CSV.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">4. Country Profiles</div><div class="screen-what">Per-country defaults.</div></div><div class="screen-right">Expandable rows.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">5. Country Exceptions</div><div class="screen-what">Product+country overrides.</div></div><div class="screen-right">CRUD table.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">6. Client Profiles</div><div class="screen-what">Margin, risk, terms, prefs.</div></div><div class="screen-right">Search + detail cards.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">7. Client Price Locks</div><div class="screen-what">Locked prices + validity.</div></div><div class="screen-right">Table, expired grayed.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">8. Cost Defaults</div><div class="screen-what">Transport, CHA, customs.</div></div><div class="screen-right">Simple form.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">9. Alert Thresholds</div><div class="screen-what">Stale days, change %, volatility.</div></div><div class="screen-right">Sliders + inputs.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">10. Currency Settings</div><div class="screen-what">Active, FX variation.</div></div><div class="screen-right">Toggle table.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">11. Container Settings</div><div class="screen-what">20ft/40ft limits.</div></div><div class="screen-right">Simple form.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">12. System Settings</div><div class="screen-what">Session, numbering, PDF, T&C.</div></div><div class="screen-right">Form + rich-text.</div></div>
+<div class="screen-card"><div class="screen-left"><div class="screen-name">13. Audit Log</div><div class="screen-what">All changes logged.</div></div><div class="screen-right">Search, filter, CSV.</div></div>
+</div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--red);"><div class="section-icon" style="background:#fff5f5;">🚫</div><h2>5. Stale Price Blocking <span class="new-tag">New</span></h2></div>
+<div class="callout-red"><strong>Hard Rule:</strong> Since prices are updated on a need basis (not daily), the system enforces freshness at quote time. If any SKU has a price older than the configurable threshold, quote creation is <strong>blocked</strong>. This forces the team to call the dealer and get a current price before quoting. Cannot proceed past Step 3 unless overridden by authorized user (<code>quote.stale_override</code> = Super User or Admin).</div>
+<table class="tbl red"><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">FR-110</td><td>Step 3: stale prices → "Generate Quote" button <strong>disabled</strong>. Red banner lists stale SKUs with age.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-111</td><td>"Override Stale Block" button visible ONLY to users with <code>quote.stale_override</code> feature.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-112</td><td>Override requires mandatory reason. Logged: user, timestamp, stale SKUs, reason.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-113</td><td>Overridden quotes show "Stale Override" badge in listing.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">FR-114</td><td>Users without override feature must get prices refreshed before proceeding.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table></div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--cyan);"><div class="section-icon" style="background:#f0faff;">🗄️</div><h2>6. Database — 24 Tables</h2></div>
+<h3>6.1 Master Data (8)</h3>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">products</div><div class="db-cols">id, name, category, competition_level, is_active</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">qualities</div><div class="db-cols">id, product_id, name, sort_order</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">package_sizes</div><div class="db-cols">id, display_name, weight_grams, is_standard</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">labour_rates</div><div class="db-cols">id, package_size_id, packing_cost, sticker_1side, sticker_2side</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">packaging_materials</div><div class="db-cols">id, package_size_id, pkts_per_carton, carton_rate, sticker_rate, pouch_price</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">cbm_dimensions</div><div class="db-cols">id, package_size_id, length_cm, breadth_cm, height_cm</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">sanitization_costs</div><div class="db-cols">id, product_id, type, cost_per_kg</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--cyan);">certification_types</div><div class="db-cols">id, name, cost_per_kg</div></div>
+<h3>6.2 IAM &amp; Config (10) <span class="new-tag">Updated</span></h3>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">users</div><div class="db-cols">id, name, email, password_hash, is_active</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">features</div><div class="db-cols">id, key (e.g. "price.entry"), label, description, category</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">user_features</div><div class="db-cols">user_id, feature_id — junction table (many-to-many)</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">feature_templates</div><div class="db-cols">id, name, feature_ids (JSON)</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">countries</div><div class="db-cols">id, name, code, default_currency_id, default_sanitization, risk_score, notes</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">country_product_overrides</div><div class="db-cols">id, country_id, product_id, override_sanitization</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">clients</div><div class="db-cols">id, name, country_id, margin_floor_override, payment_risk, credit_terms</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">client_price_locks</div><div class="db-cols">id, client_id, product_id, quality_id, locked_price, valid_from, valid_to</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">currencies / margin_factors / list_prices / system_settings</div><div class="db-cols">As defined previously</div></div>
+<h3>6.3 Operational + Transaction + Audit (6)</h3>
+<div class="db-row"><div class="db-name" style="color:var(--green);">vendor_prices</div><div class="db-cols">APPEND-ONLY: id, product_id, quality_id, price_per_kg, vendor_name, entered_by, created_at</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--green);">fx_rates</div><div class="db-cols">APPEND-ONLY: id, currency_id, rate_vs_inr, source, entered_by, created_at</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--orange);">quotes</div><div class="db-cols">id, quote_number, client_id, country_id, currency_id, status, has_stale_override, stale_override_reason, uploaded_excel, parent_quote_id, ...</div></div>
+<div class="db-row"><div class="db-name" style="color:var(--orange);">quote_line_items</div><div class="db-cols">id, quote_id, all snapshots, <strong>is_overridden (JSON)</strong>, <strong>override_values (JSON)</strong>, <strong>original_calc_values (JSON)</strong></div></div>
+<div class="db-row"><div class="db-name" style="color:var(--orange);">field_override_log</div><div class="db-cols">id, quote_line_item_id, field_name, original_value, override_value, reason, user, timestamp</div></div>
+<div class="db-row highlight"><div class="db-name" style="color:var(--purple);">rule_change_log</div><div class="db-cols">id, user_id, rule_category, rule_key, scope_type, old_value, new_value, reason, created_at</div></div>
+</div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:#666;"><div class="section-icon" style="background:#f5f5f5;">🔒</div><h2>7. Non-Functional Requirements</h2></div>
+<table class="tbl"><thead><tr><th>ID</th><th>Category</th><th>Requirement</th><th>Priority</th></tr></thead><tbody>
+<tr><td class="req-id">NF-001</td><td>Performance</td><td>Page load under 2s. 5 concurrent users. SQLite WAL mode.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">NF-002</td><td>Security</td><td>bcrypt. HTTPS. CSRF. Feature-based access on every route.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">NF-003</td><td>Backup</td><td><strong>5-day rolling to OneDrive</strong> (org Microsoft 365). rclone cron. Oldest auto-deleted at 6th.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">NF-004</td><td>Compatibility</td><td>Chrome, Edge, Safari, Firefox. Mobile-responsive.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">NF-005</td><td>Accuracy</td><td>4 decimals internal, 2–4 displayed.</td><td><span class="badge must">Must</span></td></tr>
+<tr><td class="req-id">NF-006</td><td>Audit</td><td>All logs indefinitely. Searchable &lt;1 second.</td><td><span class="badge must">Must</span></td></tr>
+</tbody></table></div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--green);"><div class="section-icon" style="background:#f0fff0;">🏗️</div><h2>8. Application Architecture</h2></div>
+<div class="code-block">quotation-builder/
+├── app/
+│   ├── __init__.py
+│   ├── models.py                # 24 SQLAlchemy models
+│   ├── decorators.py            # @require_feature('price.entry')
+│   ├── routes/
+│   │   ├── auth.py              # Login, sessions
+│   │   ├── prices.py            # Entry, stale, bulk, trends
+│   │   ├── quotes.py            # Wizard + Excel upload
+│   │   ├── admin.py             # Master data + user features
+│   │   ├── rule_engine.py       # 13 screens
+│   │   ├── analytics.py         # Dashboard
+│   │   └── api.py               # HTMX endpoints
+│   ├── services/
+│   │   ├── cost_engine.py       # 5-component calc
+│   │   ├── margin_engine.py     # Adaptive + discount
+│   │   ├── rule_resolver.py     # Override hierarchy
+│   │   ├── iam_service.py       # Feature checks
+│   │   ├── excel_parser.py      # Upload + fuzzy match
+│   │   ├── override_service.py  # Manual override + audit
+│   │   ├── stale_checker.py     # Stale blocking
+│   │   ├── cbm_engine.py
+│   │   ├── fx_service.py
+│   │   ├── audit_service.py
+│   │   ├── pdf_generator.py     # HTML → PDF via WeasyPrint
+│   │   └── export_service.py    # XLSX (openpyxl) + CSV export
+│   ├── templates/               # Jinja2 (feature-aware nav)
+│   └── static/
+├── migrations/
+├── seed_data.py
+├── fetch_fx.py
+├── backup_onedrive.py           # rclone → OneDrive, 5-day rolling
+├── order_template.xlsx          # Downloadable client template
+├── requirements.txt
+└── quotation.db</div>
+</div>
+
+<div class="section"><div class="section-header" style="border-bottom-color:var(--red);"><div class="section-icon" style="background:#fff5f5;">🚀</div><h2>9. Development Plan</h2></div>
+<div class="phase" style="background:#E2EFDA;"><div class="phase-num">1</div><div class="phase-dur">3 days</div><div class="phase-desc">Database (24 tables incl IAM), models, migrations, seed from Excel.</div><div class="phase-mods">Database</div></div>
+<div class="phase" style="background:#E2EFDA;"><div class="phase-num">2</div><div class="phase-dur">5 days</div><div class="phase-desc">Auth + Feature-based RBAC + user management + feature templates + Price portal + Trends.</div><div class="phase-mods">IAM, Prices</div></div>
+<div class="phase" style="background:#D6E4F0;"><div class="phase-num">3</div><div class="phase-dur">7 days</div><div class="phase-desc">Cost engine, margin engine, rule resolver, discount mode. Quote wizard Steps 1–3. Stale blocking.</div><div class="phase-mods">Quotes, Margin</div></div>
+<div class="phase" style="background:#D6E4F0;"><div class="phase-num">4</div><div class="phase-dur">4 days</div><div class="phase-desc">Excel upload parser + validation + fuzzy match. Manual field override system + audit.</div><div class="phase-mods">Upload, Override</div></div>
+<div class="phase" style="background:#D6E4F0;"><div class="phase-num">5</div><div class="phase-dur">4 days</div><div class="phase-desc">Multi-currency, CBM/container, PDF export, quote duplication.</div><div class="phase-mods">Currency, PDF</div></div>
+<div class="phase" style="background:#E8D5F5;"><div class="phase-num">6</div><div class="phase-dur">7 days</div><div class="phase-desc">Rule Engine: all 13 screens.</div><div class="phase-mods">Rule Engine</div></div>
+<div class="phase" style="background:#FBE5D6;"><div class="phase-num">7</div><div class="phase-dur">4 days</div><div class="phase-desc">Analytics dashboard + admin master data CRUD.</div><div class="phase-mods">Analytics</div></div>
+<div class="phase" style="background:#FBE5D6;"><div class="phase-num">8</div><div class="phase-dur">2 days</div><div class="phase-desc">Deployment, OneDrive backup (rclone), FX cron, E2E testing.</div><div class="phase-mods">Deployment</div></div>
+<div class="phase-total">Total: 36 working days — single full-stack developer</div>
+</div>
+
+<div class="section"><div class="section-header" style="border-bottom-color: #BF8F00;"><div class="section-icon" style="background: #FFFBEB;">💬</div><h2>10. Plain English Explanation</h2></div>
+
+<p style="font-size:16px; color: var(--text-secondary); font-style: italic; margin-bottom: 24px;">This section explains the entire system in simple, non-technical language — for business owners, marketing team, and anyone who won't be writing code.</p>
+
+<h3>What is this?</h3>
+<p>It's a website (like Gmail or WhatsApp Web) that your team opens in a browser. It replaces the Excel sheets you currently use to calculate quotation prices. Everyone logs in with their own username and password, and the system shows them only the screens relevant to their job.</p>
+
+<h3>Why not just keep using Excel?</h3>
+<p>Excel breaks. Someone edits the wrong cell, a formula stops working, and the price you send to a client is wrong. There's no way to stop someone from accidentally deleting a formula. There's no history of who changed what. Two people can't work on the same file at the same time without conflicts. And adding a new packaging size means editing 5 different sheets and praying nothing breaks.</p>
+<p>This system solves all of that. Formulas live in the code, not in cells that anyone can break. Every change is logged. Multiple people work simultaneously. And adding a new product or package size is just filling in a form.</p>
+
+<h3>Who uses it?</h3>
+<p>Think of it like a key card system in an office building. Each person gets a card that opens only the doors they need. The boss (admin) decides which doors each person's card opens, and can change it anytime.</p>
+<p>For example:</p>
+<ul>
+  <li><strong>Ravi</strong> only enters prices — he sees the price entry screen, the stale price list, and nothing else.</li>
+  <li><strong>Priya</strong> only builds quotations — she sees the quote wizard, quote list, and can upload Excel orders.</li>
+  <li><strong>Suresh</strong> does both prices AND quotes, plus he can override stale price blocks — he's a "Super User".</li>
+  <li><strong>You (owner)</strong> see everything including the settings panel where you control all the business rules.</li>
+</ul>
+<p>Tomorrow, if Priya needs to also see price trends, you just tick one checkbox in her profile. Done in 5 seconds. No developer needed.</p>
+
+<h3>How does a typical day work?</h3>
+
+<h4>📞 An order query comes in</h4>
+<p>Marketing gets an enquiry — maybe a WhatsApp message, maybe a phone call, maybe an email with a handwritten list. Two ways to get it into the system:</p>
+<ul>
+  <li><strong>Option A (Excel upload):</strong> You give the marketing guy a standard Excel template. He fills in the product names, quantities, and packaging preferences (or the client fills it). He uploads this file into the system. The system reads it, checks if everything makes sense (does this product exist? is the quantity reasonable?), and flags any problems in green/yellow/red — like a traffic light.</li>
+  <li><strong>Option B (Manual entry):</strong> The quotation person types each product one by one into a step-by-step form. The system guides them: pick product → pick quality → pick package size → enter quantity → choose labelling, and so on.</li>
+</ul>
+<p>Both options end up at the same place — a list of products ready to be priced.</p>
+
+<h4>💰 Getting fresh prices</h4>
+<p>Here's the important bit: <strong>you don't need to update all prices every day.</strong> You only update prices when you actually need them for an order. The system knows when a price is "old" (you set the threshold — say 7 days, or 14 days, or whatever makes sense for your business).</p>
+<p>When building a quote, if a product's price is too old, the system shows a yellow/red warning right there and gives you an "Update Price" button. You call the dealer, get the current rate, type it in, and continue. No need to leave the quotation screen.</p>
+<p>If you try to finish a quote with old prices, the system <strong>blocks you</strong> — the "Generate Quote" button is literally grayed out. Only a Super User or Admin can override this by clicking a special button and typing a reason (like "dealer confirmed price unchanged"). This prevents anyone from accidentally sending a quote based on prices from 3 weeks ago.</p>
+
+<h4>🧮 The system calculates everything</h4>
+<p>Once all products have fresh prices, the system automatically calculates:</p>
+<ul>
+  <li><strong>Raw material cost</strong> — the price you just entered from the dealer</li>
+  <li><strong>Labour cost</strong> — based on the package size (smaller packets = more work per kg = more expensive)</li>
+  <li><strong>Packaging cost</strong> — cartons, stickers, pouches, or jars</li>
+  <li><strong>Extra costs</strong> — sanitization (ETO/Gamma/Steam), certification (FDA, Spice Board, etc.), loading/unloading</li>
+  <li><strong>Transport</strong> — getting it to the port</li>
+</ul>
+<p>It adds all of these up, converts from Rupees to the client's currency (Dollars, Euros, Pounds, Dirhams — whatever), adds your profit margin, and spreads the container costs (customs, clearing agent) across the order.</p>
+
+<h4>📊 Smart profit margin</h4>
+<p>Instead of always adding a flat 10%, the system suggests a margin based on common sense:</p>
+<ul>
+  <li>Big order? You can afford a smaller margin (volume makes up for it).</li>
+  <li>Client paying 80% advance? Lower risk, so you can offer a better price.</li>
+  <li>Repeat client with good payment history? Reward them with a better rate.</li>
+  <li>Niche product with no competition (like dagad phool)? You can charge more.</li>
+  <li>Prices have been jumping up and down? Add a safety buffer.</li>
+  <li>Rush order in 5 days? Premium pricing for the overtime.</li>
+  <li>Risky country with payment issues? Higher margin to cover the risk.</li>
+</ul>
+<p>The system considers all of these and suggests a number. You can always change it — it's a suggestion, not a mandate. But if you set the margin below the minimum (say below 3%), the system flags it and requires the boss to approve.</p>
+
+<h4>📦 Container planning</h4>
+<p>The system calculates how much space (CBM) and weight the order takes, and tells you whether you need a 20-foot or 40-foot container. It shows you how full the container is — if it's 95% full by volume but only 60% by weight, you know you can add more heavy items. This helps when negotiating with the buyer on order adjustments.</p>
+
+<h4>📄 Sending the quote</h4>
+<p>Pick how the client wants to see prices — per packet, per carton, per pound, per tonne, or all of them. Click a button. Out comes a professional PDF, or an Excel file, or a CSV. The quote has S & G Exports branding, the rate used for currency conversion, and your terms & conditions at the bottom.</p>
+
+<h3>What if I need to change a number manually?</h3>
+<p>Any calculated number in the system can be clicked and changed by hand. Say the system calculated labour at ₹25/kg but you know it's actually ₹30 because of a special requirement — just click the number, type 30, give a reason, done. The system marks it with an orange border so everyone knows it was manually changed. There's always a "reset" button to go back to the calculated value. Only people with permission can do this.</p>
+
+<h3>What if a client comes back for a revised quote?</h3>
+<p>One-click duplicate. The system copies the entire quote, updates all prices to today's rates, and highlights what changed. So if turmeric went from ₹120 to ₹135 since the last quote, you see it immediately in yellow. Adjust and send.</p>
+
+<h3>What about the settings?</h3>
+<p>Everything that might change — the 3% minimum margin, the 7-day stale threshold, which sanitization is standard for USA shipments, the container weight limits, the clearing agent cost, the currency exchange buffer — all of it lives in one place called the <strong>Rule Engine</strong>. It's like a settings panel with 13 tabs. Only the admin (you) can access it.</p>
+<p>The clever part: you can set rules at different levels. A global rule says "minimum margin is 3%." But for one important client, you can set their minimum to 1%. For USA shipments, you can set "always use ETO sanitization." For Basmati Rice to EU specifically, you can override that to "use Gamma instead." The system automatically knows which rule to apply — the most specific one always wins.</p>
+
+<h3>Is my data safe?</h3>
+<p>Every night, the system automatically copies the entire database to your company's OneDrive (the Microsoft 365 you're already paying for). It keeps the last 5 days. If something goes wrong, recovery takes 30 seconds — just restore one file.</p>
+<p>Every single change — who entered a price, who created a quote, who overrode a margin, who changed a setting — is logged with the person's name and the exact time. Nothing is ever truly deleted. You can always trace back what happened.</p>
+
+<h3>What does it cost to run?</h3>
+<p>The software itself is free — built with free tools. Hosting is either free (basic plan on Railway or Render) or ₹500/month if you want a private server. Currency exchange rates come from a free API. The OneDrive backup uses your existing Microsoft 365 subscription. There are no per-user fees, no monthly software subscriptions.</p>
+
+<h3>How long to build?</h3>
+<p>36 working days for one developer. That's roughly 7–8 weeks. The price entry system works first (by week 2), quotations start working around week 4, and the full system with analytics and the settings panel is done by week 8.</p>
+
+</div>
+
+<div style="text-align:center;padding:40px 0;border-top:2px solid var(--border);margin-top:40px;">
+<img src="https://sandgexports.com/wp-content/uploads/2023/01/JPEG.jpg" alt="S &amp; G Exports" style="width:60px;border-radius:8px;margin-bottom:12px;background:white;padding:4px;" onerror="this.style.display='none'"><br>
+<span style="color:var(--text-muted);font-size:13px;">S &amp; G Exports — SRS v3.0 — April 2026</span><br>
+<span style="color:var(--text-muted);font-size:11px;">sandgexports.com • trade@sandgexports.com</span>
+</div>
+</div>
+</body>
+</html>

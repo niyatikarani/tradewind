@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Upload Order{% endblock %}
+{% block page_title %}Upload Order{% endblock %}
+{% block topbar_actions %}
+<a href="/quotes/{{ quote.id }}/items" class="btn-outline">← Back to Items</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-lg">
+  <div class="card p-6">
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Quote <strong class="text-slate-900 dark:text-slate-100">{{ quote.quote_number }}</strong></p>
+    <p class="text-sm text-slate-600 dark:text-slate-300 mb-6">
+      Download the <a href="/quotes/template" class="text-emerald-600 dark:text-emerald-400 hover:underline">order template</a>, fill it in, then upload below.
+    </p>
+    <form hx-post="/quotes/{{ quote.id }}/upload" hx-target="#upload-result" hx-encoding="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="form-label">Excel file (.xlsx)</label>
+        <input type="file" name="file" class="form-input" accept=".xlsx" required />
+      </div>
+      <button type="submit" class="btn-primary">Upload &amp; Parse</button>
+    </form>
+    <div id="upload-result" class="mt-4"></div>
+  </div>
+</div>
+{% endblock %}
