@@ -1,0 +1,163 @@
+/* ==========================================================================
+   TradeWind Design System — Colors & Type
+   B2B export-operations SaaS. Slate-neutral UI with a single emerald accent.
+   Load this file, then use the CSS variables below. Font is Inter.
+   ========================================================================== */
+
+/* ---- Font: Inter (loaded from Google Fonts CDN) -------------------------- */
+/* Inter is a free, embeddable Google Font. Either keep this @import, or for
+   best performance add the <link> form to your <head>:
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* ====================================================================
+     BASE COLOR PALETTE
+     Slate ramp = neutrals/UI. Emerald ramp = the single brand accent.
+     Plus amber/red/green for status semantics, orange for "override".
+     ==================================================================== */
+
+  /* Slate neutrals (Tailwind slate) */
+  --slate-50:  #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+
+  /* Emerald accent (Tailwind emerald) */
+  --emerald-50:  #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-400: #34d399;
+  --emerald-500: #10b981; /* primary accent */
+  --emerald-600: #059669; /* accent dark / hover */
+  --emerald-700: #047857;
+  --emerald-900: #065f46; /* accent text on tint */
+
+  /* Status — Amber / Warning */
+  --amber-bg:   #fef3c7;
+  --amber-text: #d97706;
+  --amber-500:  #f59e0b;
+
+  /* Status — Red / Error */
+  --red-bg:   #fee2e2;
+  --red-text: #dc2626;
+  --red-500:  #ef4444;
+
+  /* Status — Green / Success (distinct from emerald accent) */
+  --green-bg:   #dcfce7;
+  --green-text: #16a34a;
+
+  /* Override (manual price override / forced state) */
+  --orange-override: #fd7e14;
+
+  /* ====================================================================
+     SEMANTIC TOKENS — reference these in product UI, not raw ramps.
+     ==================================================================== */
+
+  /* Surfaces */
+  --bg-app:        var(--slate-100);  /* page background */
+  --bg-surface:    #ffffff;           /* cards, panels, tables */
+  --bg-surface-2:  var(--slate-50);   /* subtle inset / table headers */
+  --bg-sidebar:    #ffffff;           /* left nav surface */
+  --bg-tint:       var(--emerald-50); /* active nav / accent tint */
+
+  /* Text */
+  --fg1: var(--slate-900);  /* primary text, headings */
+  --fg2: var(--slate-500);  /* secondary text, labels */
+  --fg3: var(--slate-400);  /* muted text, captions, placeholders */
+  --fg-on-accent: #ffffff;  /* text on emerald fill */
+  --fg-accent:    var(--emerald-600); /* accent-colored text/links */
+
+  /* Borders & dividers */
+  --border:       var(--slate-200);
+  --border-strong: var(--slate-300);
+  --border-accent: var(--emerald-500);
+  --border-focus:  var(--emerald-500);
+
+  /* ====================================================================
+     RADII
+     ==================================================================== */
+  --radius-sm: 6px;   /* chips, badges, small inputs */
+  --radius-md: 8px;   /* buttons, inputs */
+  --radius-lg: 10px;  /* cards, panels (the signature radius) */
+  --radius-xl: 14px;  /* large containers / upload zones */
+  --radius-full: 9999px;
+
+  /* ====================================================================
+     SHADOWS — soft and minimal. The product reads via borders, not shadow.
+     ==================================================================== */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);          /* signature card */
+  --shadow-raised: 0 4px 12px rgba(15, 23, 42, 0.08);    /* menus, popovers */
+  --shadow-modal: 0 20px 48px rgba(15, 23, 42, 0.18);    /* dialogs */
+  --ring-focus: 0 0 0 3px rgba(16, 185, 129, 0.25);      /* emerald focus ring */
+
+  /* ====================================================================
+     SPACING SCALE (4px base)
+     ==================================================================== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Layout */
+  --sidebar-w: 220px;
+  --topbar-h: 60px;
+
+  /* ====================================================================
+     TYPOGRAPHY
+     ==================================================================== */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Type scale (font-size / line-height / weight) */
+  --text-display: 700 28px/1.2 var(--font-sans);  /* page hero numbers */
+  --text-h1:      700 20px/1.3 var(--font-sans);  /* page / order title */
+  --text-h2:      600 16px/1.4 var(--font-sans);  /* section headers */
+  --text-h3:      600 14px/1.4 var(--font-sans);  /* card headers */
+  --text-body:    400 14px/1.5 var(--font-sans);  /* default body */
+  --text-body-sm: 400 13px/1.5 var(--font-sans);  /* table cells, dense */
+  --text-label:   500 13px/1.4 var(--font-sans);  /* form labels, nav */
+  --text-caption: 400 12px/1.4 var(--font-sans);  /* meta, timestamps */
+  --text-mono:    500 13px/1.4 var(--font-mono);  /* SKUs, SO numbers */
+
+  --tracking-tight: -0.01em;
+  --tracking-wide:  0.04em;  /* uppercase eyebrows / KPI labels */
+}
+
+/* ==========================================================================
+   ELEMENT DEFAULTS — opt-in helpers mapped to semantic tokens.
+   ========================================================================== */
+body {
+  font: var(--text-body);
+  color: var(--fg1);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.ds-display { font: var(--text-display); color: var(--fg1); letter-spacing: var(--tracking-tight); }
+.ds-h1 { font: var(--text-h1); color: var(--fg1); letter-spacing: var(--tracking-tight); }
+.ds-h2 { font: var(--text-h2); color: var(--fg1); }
+.ds-h3 { font: var(--text-h3); color: var(--fg1); }
+.ds-body { font: var(--text-body); color: var(--fg1); }
+.ds-secondary { font: var(--text-body-sm); color: var(--fg2); }
+.ds-muted { font: var(--text-caption); color: var(--fg3); }
+.ds-label-eyebrow {
+  font: var(--text-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg2);
+}
+.ds-mono { font: var(--text-mono); color: var(--fg1); }

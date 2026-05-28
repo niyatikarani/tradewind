@@ -1,0 +1,24 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--slate-100); font-family: var(--font-sans); }
+  .alert { display: flex; align-items: flex-start; gap: 11px; border-radius: 10px; padding: 13px 15px; font-size: 13px; line-height: 1.5; }
+  .alert + .alert { margin-top: 12px; }
+  .alert i { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .amber { background: var(--amber-bg); border-left: 4px solid var(--amber-text); color: #7c4a03; }
+  .amber i { color: var(--amber-text); }
+  .red { background: var(--red-bg); border-left: 4px solid var(--red-text); color: #8a1c1c; }
+  .red i { color: var(--red-text); }
+  b { font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="alert red"><i class="ti ti-alert-circle"></i><div><b>SO-090 — Raw material delivery is 2 days overdue.</b> Container date Jan 20 is now at risk.</div></div>
+  <div class="alert amber"><i class="ti ti-alert-triangle"></i><div>Container utilisation is <b>67%</b> — below your 85% threshold. 58 more cartons fit. Consider adding volume or switching to a 10ft container.</div></div>
+</body>
+</html>

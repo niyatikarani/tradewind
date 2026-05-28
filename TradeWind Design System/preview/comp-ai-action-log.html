@@ -1,0 +1,38 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--slate-100); font-family: var(--font-sans); }
+  .run { background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-card); overflow: hidden; }
+  .run-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--slate-50); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--fg2); }
+  .run-head i { font-size: 15px; color: var(--emerald-600); }
+  .run-head .count { margin-left: auto; font-weight: 500; color: var(--fg3); }
+  .act { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 13px; }
+  .act + .act { border-top: 1px solid var(--border); }
+  .act i { font-size: 16px; flex-shrink: 0; }
+  .act .lbl { color: var(--fg1); }
+  .act .res { margin-left: auto; font-size: 12px; color: var(--fg2); }
+  .act .res.mono { font-family: var(--font-mono); }
+  .act .undo { margin-left: auto; font-size: 11.5px; font-weight: 500; color: var(--fg-accent); cursor: pointer; }
+  .act.running { background: #fbfdff; }
+  .act.running .lbl { color: var(--fg2); }
+  .act.blocked .lbl { color: var(--red-text); }
+  .spin { width: 15px; height: 15px; border: 2px solid var(--slate-200); border-top-color: var(--emerald-500); border-radius: 9999px; animation: spin .8s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <div class="run">
+    <div class="run-head"><i class="ti ti-bolt"></i>TradeWind ran 5 actions<span class="count">3 done · 1 running · 1 blocked</span></div>
+    <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Matched SKUs to catalogue</span><span class="res">2 of 2</span></div>
+    <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Created sales order</span><span class="undo">Undo</span></div>
+    <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Sent vendor PO — Ramesh Agro</span><span class="res mono">PO-441</span></div>
+    <div class="act running"><span class="spin"></span><span class="lbl">Generating commercial invoice…</span></div>
+    <div class="act blocked"><i class="ti ti-lock" style="color:var(--red-text)"></i><span class="lbl">Send to buyer — blocked, needs COA</span><span class="res" style="color:var(--red-text)">Resolve</span></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--slate-100); font-family: var(--font-sans); }
+
+  /* chat window frame */
+  .win { background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-card); overflow: hidden; }
+  .win-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .win-head img { width: 26px; height: 26px; }
+  .win-head .t { font-size: 13px; font-weight: 600; color: var(--fg1); }
+  .win-head .status { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--fg2); }
+  .win-head .status .pulse { width: 7px; height: 7px; border-radius: 9999px; background: var(--emerald-500); box-shadow: 0 0 0 0 rgba(16,185,129,.5); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)} 70%{box-shadow:0 0 0 6px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)} }
+
+  .thread { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* user bubble */
+  .user { align-self: flex-end; max-width: 78%; background: var(--emerald-500); color: #fff; font-size: 13px; line-height: 1.5; padding: 10px 13px; border-radius: 12px 12px 4px 12px; }
+
+  /* AI message row */
+  .ai { display: flex; gap: 10px; align-items: flex-start; max-width: 92%; }
+  .ai .ava { width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0; }
+  .ai .col { flex: 1; min-width: 0; }
+  .ai .say { font-size: 13px; line-height: 1.5; color: var(--fg1); }
+  .ai .say .ref { font-family: var(--font-mono); font-size: 12px; color: var(--fg2); }
+
+  /* AI action log — "executed on your behalf" */
+  .run { margin-top: 9px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+  .run-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--slate-50); border-bottom: 1px solid var(--border); font-size: 11.5px; font-weight: 600; color: var(--fg2); }
+  .run-head .count { margin-left: auto; font-weight: 500; color: var(--fg3); }
+  .act { display: flex; align-items: center; gap: 9px; padding: 8px 12px; font-size: 12.5px; }
+  .act + .act { border-top: 1px solid var(--border); }
+  .act i { font-size: 15px; flex-shrink: 0; }
+  .act .lbl { color: var(--fg1); }
+  .act .res { margin-left: auto; font-size: 11.5px; color: var(--fg2); }
+  .act .res.mono { font-family: var(--font-mono); }
+  .act.running { background: #fbfdff; }
+  .act.running .lbl { color: var(--fg2); }
+  .spin { width: 14px; height: 14px; border: 2px solid var(--slate-200); border-top-color: var(--emerald-500); border-radius: 9999px; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* AI clarifying question */
+  .ask { margin-top: 9px; border: 1px solid var(--amber-text); border-radius: 9px; background: #fffdf5; padding: 12px 13px; }
+  .ask .q-lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--amber-text); }
+  .ask .q { font-size: 13px; color: var(--fg1); margin: 7px 0 11px; line-height: 1.45; }
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border: 1px solid var(--border); border-radius: 8px; background: #fff; cursor: pointer; transition: border-color .12s, background-color .12s; }
+  .opt:hover { border-color: var(--emerald-500); background: var(--emerald-50); }
+  .opt .k { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--fg1); }
+  .opt .d { font-size: 12px; color: var(--fg2); }
+  .opt .rec { margin-left: auto; font-size: 10.5px; font-weight: 600; color: var(--emerald-600); background: var(--emerald-50); border-radius: 6px; padding: 2px 7px; }
+
+  /* composer */
+  .composer { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--border); padding: 10px 14px; }
+  .composer .box { flex: 1; font-size: 12.5px; color: var(--fg3); }
+  .composer .send { width: 30px; height: 30px; border-radius: 7px; background: var(--emerald-500); color: #fff; border: none; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+  <div class="win">
+    <div class="win-head">
+      <img src="../assets/logomark.svg" alt="">
+      <span class="t">TradeWind AI</span>
+      <span class="status"><span class="pulse"></span>Working</span>
+    </div>
+
+    <div class="thread">
+      <div class="user">Al Barakah wants 500kg cinnamon sticks, kosher, by 14 Jan CIF Mundra. Also 200kg cardamom bold.</div>
+
+      <!-- AI executes actions on your behalf -->
+      <div class="ai">
+        <img class="ava" src="../assets/logomark.svg" alt="">
+        <div class="col">
+          <div class="say">On it — structuring this into a sales order.</div>
+          <div class="run">
+            <div class="run-head"><i class="ti ti-bolt" style="font-size:14px"></i>Actions<span class="count">3 done · 1 running</span></div>
+            <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Matched SKUs to catalogue</span><span class="res">2 of 2</span></div>
+            <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Identified buyer</span><span class="res">Al Barakah Trading</span></div>
+            <div class="act"><i class="ti ti-check" style="color:var(--green-text)"></i><span class="lbl">Locked FX rate</span><span class="res mono">₹83.4/$</span></div>
+            <div class="act running"><span class="spin"></span><span class="lbl">Drafting sales order…</span><span class="res">SO-089</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI asks a clarifying question -->
+      <div class="ai">
+        <img class="ava" src="../assets/logomark.svg" alt="">
+        <div class="col">
+          <div class="say">One thing before I confirm — "cardamom bold" matched 3 SKUs. Which did you mean?</div>
+          <div class="ask">
+            <span class="q-lbl"><i class="ti ti-help-circle" style="font-size:13px"></i>Needs your input</span>
+            <div class="q">Pick the right cardamom SKU:</div>
+            <div class="opts">
+              <div class="opt"><span class="k">CARD-BOLD-7MM</span><span class="d">Green Cardamom Bold 7mm</span><span class="rec">Best match</span></div>
+              <div class="opt"><span class="k">CARD-STD-5MM</span><span class="d">Cardamom Standard 5mm</span></div>
+              <div class="opt"><span class="k">CARD-GRN-A</span><span class="d">Green Cardamom Grade A</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <i class="ti ti-paperclip" style="color:var(--fg3); font-size:17px"></i>
+      <span class="box">Reply, paste an order, or ask anything…</span>
+      <button class="send"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+</body>
+</html>

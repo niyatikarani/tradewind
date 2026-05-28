@@ -1,0 +1,49 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--slate-100); font-family: var(--font-sans); display: flex; gap: 16px; }
+  .ask { flex: 1; border: 1px solid var(--amber-text); border-radius: 10px; background: #fffdf5; padding: 14px; box-shadow: var(--shadow-card); }
+  .q-lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--amber-text); }
+  .q { font-size: 13.5px; color: var(--fg1); margin: 8px 0 12px; line-height: 1.45; }
+  .opts { display: flex; flex-direction: column; gap: 8px; }
+  .opt { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; cursor: pointer; transition: border-color .12s, background-color .12s; }
+  .opt:hover { border-color: var(--emerald-500); background: var(--emerald-50); }
+  .opt .k { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--fg1); }
+  .opt .d { font-size: 12px; color: var(--fg2); }
+  .opt .rec { margin-left: auto; font-size: 10.5px; font-weight: 600; color: var(--emerald-600); background: var(--emerald-50); border-radius: 6px; padding: 2px 7px; }
+  /* binary confirm variant */
+  .yn { font-size: 13.5px; color: var(--fg1); margin: 8px 0 12px; line-height: 1.45; }
+  .yn .ref { font-family: var(--font-mono); font-size: 12.5px; color: var(--fg2); }
+  .btns { display: flex; gap: 8px; }
+  .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; font-weight: 500; border-radius: 8px; padding: 9px 12px; cursor: pointer; border: 1px solid transparent; }
+  .btn i { font-size: 15px; }
+  .primary { background: var(--emerald-500); color: #fff; }
+  .outline { background: #fff; color: var(--slate-700); border-color: var(--border); }
+</style>
+</head>
+<body>
+  <div class="ask">
+    <span class="q-lbl"><i class="ti ti-help-circle" style="font-size:13px"></i>Needs your input</span>
+    <div class="q">"Cardamom bold" matched 3 SKUs — which did you mean?</div>
+    <div class="opts">
+      <div class="opt"><span class="k">CARD-BOLD-7MM</span><span class="d">Green Cardamom Bold 7mm</span><span class="rec">Best match</span></div>
+      <div class="opt"><span class="k">CARD-STD-5MM</span><span class="d">Cardamom Standard 5mm</span></div>
+      <div class="opt"><span class="k">CARD-GRN-A</span><span class="d">Green Cardamom Grade A</span></div>
+    </div>
+  </div>
+
+  <div class="ask">
+    <span class="q-lbl"><i class="ti ti-help-circle" style="font-size:13px"></i>Confirm before I continue</span>
+    <div class="yn">You wrote delivery <span class="ref">14 Jan, CIF Mundra</span>. CIF means freight + insurance are your cost — shall I quote it that way?</div>
+    <div class="btns">
+      <button class="btn primary"><i class="ti ti-check"></i>Yes, quote CIF</button>
+      <button class="btn outline">No, it's FOB</button>
+    </div>
+  </div>
+</body>
+</html>

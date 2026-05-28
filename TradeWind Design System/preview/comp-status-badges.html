@@ -1,0 +1,35 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-sans); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .row + .row { margin-top: 14px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 4px 9px; }
+  .badge i { font-size: 13px; }
+  .green { background: var(--green-bg); color: var(--green-text); }
+  .amber { background: var(--amber-bg); color: var(--amber-text); }
+  .slate { background: var(--slate-100); color: var(--slate-500); }
+  .emerald { background: var(--emerald-50); color: var(--emerald-900); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="badge green"><i class="ti ti-circle-check"></i>On Track</span>
+    <span class="badge amber"><i class="ti ti-alert-triangle"></i>At Risk</span>
+    <span class="badge slate">Quote Sent</span>
+    <span class="badge green"><i class="ti ti-ship"></i>Shipped</span>
+    <span class="badge slate">Done</span>
+  </div>
+  <div class="row">
+    <span class="badge emerald">Kosher</span>
+    <span class="badge slate">CIF Mundra</span>
+    <span class="badge emerald">Known buyer</span>
+    <span class="badge amber"><i class="ti ti-clock"></i>Draft — pending confirm</span>
+  </div>
+</body>
+</html>

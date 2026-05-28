@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-sans); }
+  .row { display: flex; gap: 14px; align-items: center; }
+  .conf { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+  .badge { font-size: 12px; font-weight: 700; border-radius: 6px; padding: 4px 10px; }
+  .rule { font-size: 11px; color: var(--fg2); }
+  .green { background: var(--green-bg); color: var(--green-text); }
+  .amber { background: var(--amber-bg); color: var(--amber-text); }
+  .red { background: var(--red-bg); color: var(--red-text); }
+  .field-red { border: 1.5px dashed var(--red-text); border-radius: 7px; padding: 9px 12px; font-size: 12px; color: var(--red-text); background: #fff; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="conf"><span class="badge green">96%</span><span class="rule">≥ 90%</span></div>
+    <div class="conf"><span class="badge amber">81% — review</span><span class="rule">70–89%</span></div>
+    <div class="conf"><span class="badge red">61%</span><span class="rule">&lt; 70%</span></div>
+    <div class="conf"><span class="field-red">Payment terms — not found</span><span class="rule">&lt; 70% field</span></div>
+  </div>
+</body>
+</html>

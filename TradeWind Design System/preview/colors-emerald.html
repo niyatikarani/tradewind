@@ -1,0 +1,26 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; font-family: var(--font-sans); }
+  .ramp { display: flex; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .sw { flex: 1; height: 72px; display: flex; flex-direction: column; justify-content: space-between; padding: 7px; box-sizing: border-box; }
+  .sw .n { font-size: 10px; font-weight: 600; }
+  .sw .role { font-size: 9px; opacity: .85; }
+</style>
+</head>
+<body>
+  <div class="ramp">
+    <div class="sw" style="background:#ecfdf5"><span class="n" style="color:#065f46">50</span><span class="role" style="color:#065f46">tint / nav</span></div>
+    <div class="sw" style="background:#d1fae5"><span class="n" style="color:#065f46">100</span></div>
+    <div class="sw" style="background:#34d399"><span class="n" style="color:#064e3b">400</span></div>
+    <div class="sw" style="background:#10b981"><span class="n" style="color:#fff">500</span><span class="role" style="color:#fff">accent</span></div>
+    <div class="sw" style="background:#059669"><span class="n" style="color:#fff">600</span><span class="role" style="color:#fff">hover / dark</span></div>
+    <div class="sw" style="background:#047857"><span class="n" style="color:#fff">700</span></div>
+    <div class="sw" style="background:#065f46"><span class="n" style="color:#fff">900</span><span class="role" style="color:#fff">text on tint</span></div>
+  </div>
+</body>
+</html>

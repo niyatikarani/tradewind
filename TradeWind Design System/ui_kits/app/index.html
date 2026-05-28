@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeWind — App UI Kit</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="app.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="Dashboard.jsx"></script>
+<script type="text/babel" src="AIIntake.jsx"></script>
+<script type="text/babel" src="SalesOrderDetail.jsx"></script>
+<script type="text/babel" src="TaskBoard.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+// nav id -> screen. "order" is a virtual screen reached from links.
+function screenFor(route, onNav) {
+  switch (route) {
+    case "dashboard": return <Dashboard onNav={onNav} />;
+    case "intake": return <AIIntake onNav={onNav} />;
+    case "tasks": return <TaskBoard onNav={onNav} />;
+    case "orders":
+    case "order": return <SalesOrderDetail onNav={onNav} />;
+    default: return <Placeholder route={route} />;
+  }
+}
+
+function Placeholder({ route }) {
+  const labels = { quotes: "Quotes", analytics: "Analytics", rules: "Rule Engine" };
+  return (
+    <div className="main">
+      <Topbar><div className="title">{labels[route] || "Page"}</div></Topbar>
+      <div className="content">
+        <div style={{ maxWidth: 460, margin: "60px auto", textAlign: "center", color: "var(--fg2)" }}>
+          <i className="ti ti-tools" style={{ fontSize: 36, color: "var(--slate-300)" }}></i>
+          <div style={{ fontSize: 15, fontWeight: 600, color: "var(--fg1)", marginTop: 12 }}>{labels[route]} lives in the existing app</div>
+          <div style={{ fontSize: 13, marginTop: 6, lineHeight: 1.5 }}>
+            This surface (quote wizard, analytics, rule engine) is already built in the production quotation-builder
+            and isn't recreated in this UI kit. The four core new screens are: Dashboard, AI Intake, Orders, Tasks.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// map virtual "order" route to highlight the Orders nav item
+function navHighlight(route) { return route === "order" ? "orders" : route; }
+
+function App() {
+  const [route, setRoute] = useState("dashboard");
+  const onNav = (id) => setRoute(id);
+  return (
+    <div className="app">
+      <Sidebar active={navHighlight(route)} onNav={onNav} />
+      {screenFor(route, onNav)}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

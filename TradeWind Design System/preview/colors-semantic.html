@@ -1,0 +1,27 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; font-family: var(--font-sans); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .chip { height: 40px; }
+  .meta { padding: 7px 9px; }
+  .meta .role { font-size: 12px; font-weight: 600; color: var(--fg1); }
+  .meta .hex { font-size: 11px; color: var(--fg2); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="item"><div class="chip" style="background:#dcfce7"></div><div class="meta"><div class="role" style="color:#16a34a">Success</div><div class="hex">bg #dcfce7 · #16a34a</div></div></div>
+    <div class="item"><div class="chip" style="background:#fef3c7"></div><div class="meta"><div class="role" style="color:#d97706">Warning</div><div class="hex">bg #fef3c7 · #d97706</div></div></div>
+    <div class="item"><div class="chip" style="background:#fee2e2"></div><div class="meta"><div class="role" style="color:#dc2626">Error</div><div class="hex">bg #fee2e2 · #dc2626</div></div></div>
+    <div class="item"><div class="chip" style="background:#ecfdf5"></div><div class="meta"><div class="role" style="color:#059669">Accent tint</div><div class="hex">bg #ecfdf5 · #10b981</div></div></div>
+    <div class="item"><div class="chip" style="background:#fd7e14"></div><div class="meta"><div class="role" style="color:#fd7e14">Override</div><div class="hex">#fd7e14</div></div></div>
+    <div class="item"><div class="chip" style="background:#f1f5f9; border-bottom:1px solid #e2e8f0"></div><div class="meta"><div class="role" style="color:#64748b">Neutral / slate</div><div class="hex">bg #f1f5f9</div></div></div>
+  </div>
+</body>
+</html>

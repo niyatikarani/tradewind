@@ -1,0 +1,26 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px 24px; background: #fff; font-family: var(--font-sans); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: block; font: var(--text-label); color: var(--fg2); margin-bottom: 6px; }
+  .input { width: 100%; box-sizing: border-box; font-size: 14px; color: var(--fg1); padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+  .input.focus { border-color: var(--emerald-500); box-shadow: var(--ring-focus); outline: none; }
+  .input.placeholder { color: var(--fg3); }
+  .input.error { border: 1.5px dashed var(--red-text); }
+  .hint { font-size: 11px; color: var(--red-text); margin-top: 5px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div><label>Price per kg (₹)</label><div class="input">280</div></div>
+    <div><label>Vendor name</label><div class="input focus">Ramesh Agro</div></div>
+    <div><label>Source</label><div class="input placeholder">Vendor call ▾</div></div>
+    <div><label>Payment terms</label><div class="input error placeholder">Not found</div><div class="hint">Required before SO creation.</div></div>
+  </div>
+</body>
+</html>

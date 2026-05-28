@@ -1,0 +1,30 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-sans); }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; font: var(--text-label); border-radius: 8px; padding: 9px 16px; cursor: pointer; border: 1px solid transparent; transition: all .13s ease; }
+  .btn i { font-size: 16px; }
+  .primary { background: var(--emerald-500); color: #fff; }
+  .primary:hover { background: var(--emerald-600); }
+  .outline { background: #fff; color: var(--slate-700); border-color: var(--border); }
+  .outline:hover { background: var(--slate-50); border-color: var(--border-strong); }
+  .disabled { background: var(--emerald-500); color: #fff; opacity: .45; cursor: not-allowed; }
+  .link { background: transparent; color: var(--fg2); padding: 9px 4px; }
+  .link:hover { color: var(--fg-accent); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <button class="btn primary"><i class="ti ti-circle-check"></i>Create Sales Order</button>
+    <button class="btn outline">Save as Draft</button>
+    <button class="btn disabled"><i class="ti ti-circle-check"></i>Create (disabled)</button>
+    <button class="btn link"><i class="ti ti-plus"></i>Add Task</button>
+  </div>
+</body>
+</html>
